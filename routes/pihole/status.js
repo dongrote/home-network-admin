@@ -1,14 +1,20 @@
 'use strict';
-const _ = require('lodash'),
-  request = require('request-promise'),
-  {YouTubeContentDomainRegex} = require('../../constants'),
+const {PiHoleController} = require('../../controllers'),
+  constants = require('../../constants'),
   {PIHOLE_URI} = process.env;
 
-exports = module.exports = (req, res, next) => request
-  .get({uri: `${PIHOLE_URI}/admin/scripts/pi-hole/php/get.php?list=black`, json: true})
-  .then(response => {
-    const blacklist = _.flattenDeep(response),
-      blocked = _.includes(blacklist, YouTubeContentDomainRegex);
-    res.json({blocked});
-  })
-  .catch(next);
+const YouTube = (req, res, next) => {
+  let controller = new PiHoleController(PIHOLE_URI);
+  return controller.domainIsBlocked(constants.YouTubeContentDomainRegex)
+    .then(blocked => res.json({blocked}))
+    .catch(next);
+};
+
+const Twitch = (req, res, next) => {
+  let controller = new PiHoleController(PIHOLE_URI);
+  return controller.domainIsBlocked(constants.TwitchDomainRegex)
+    .then(blocked => res.json({blocked}))
+    .catch(next);
+};
+
+exports = module.exports = {YouTube, Twitch};
