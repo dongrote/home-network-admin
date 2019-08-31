@@ -23,7 +23,6 @@ exports = module.exports = deviceName => new Promise((resolve, reject) => {
   return checkRuleExists(rule)
     .then(exists => {
       console.log(`rule ${exists ? 'exists' : 'does not exist'}`);
-      console.dir(rule);
       return exists;
     })
     .then(exists => exists ? null : appendRule(rule));
