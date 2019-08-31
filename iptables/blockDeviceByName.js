@@ -21,6 +21,11 @@ exports = module.exports = deviceName => new Promise((resolve, reject) => {
     extra: ['--reject-with', 'tcp-reset']
   };
   return checkRuleExists(rule)
+    .then(exists => {
+      console.log(`rule ${exists ? 'exists' : 'does not exist'}`);
+      console.dir(rule);
+      return exists;
+    })
     .then(exists => exists ? null : appendRule(rule));
 })
 .then(() => save());
