@@ -1,6 +1,7 @@
 'use strict';
-const cp = require('child_process'),
-  dns = require('dns'),
+const dns = require('dns'),
+  checkRuleExists = require('./checkRuleExists'),
+  deleteRule = require('./deleteRule'),
   save = require('./save');
 
 exports = module.exports = deviceName => new Promise((resolve, reject) => {
@@ -8,12 +9,18 @@ exports = module.exports = deviceName => new Promise((resolve, reject) => {
     if (err) {
       return reject(err);
     }
-    cp.execFile('iptables', ['-D', 'FORWARD', '-p', 'tcp', '-s', addr, '-j', 'REJECT', '--reject-with', 'tcp-reset'], err => {
-      if (err) {
-        return reject(err);
-      }
-      resolve();
-    });
+    resolve(addr);
   });
+})
+.then(addr => {
+  const rule = {
+    chain: 'FORWARD',
+    proto: 'tcp',
+    src: addr,
+    target: 'REJECT',
+    extra: ['--reject-with', 'tcp-reset']
+  };
+  return checkRuleExists(rule)
+    .then(exists => exists ? deleteRule(rule) : null);
 })
 .then(() => save());
