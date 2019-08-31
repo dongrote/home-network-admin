@@ -3,7 +3,7 @@ const cp = require('child_process'),
   fs = require('fs'),
   constants = require('./constants');
 
-exports = module.exports = new Promise((resolve, reject) => {
+exports = module.exports = () => new Promise((resolve, reject) => {
   const filestream = fs.createWriteStream(constants.iptablesRulesPath);
   filestream
     .on('error', reject)
