@@ -1,8 +1,9 @@
 'use strict';
-const _ = require('lodash'),
-  router = require('express').Router(),
+const router = require('express').Router(),
+  iptables = require('./iptables'),
   pihole = require('./pihole');
 
+router.use('/iptables', iptables);
 router.use('/pihole', pihole);
 
-module.exports = router;
+exports = module.exports = router;
