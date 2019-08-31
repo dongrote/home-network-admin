@@ -7,6 +7,5 @@ exports = module.exports = rule => exec('-C', rule)
     if (err.code === 1) {
       return false;
     }
-    console.error(err);
     throw err;
   });

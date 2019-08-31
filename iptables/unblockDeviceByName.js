@@ -1,6 +1,7 @@
 'use strict';
 const dns = require('dns'),
   checkRuleExists = require('./checkRuleExists'),
+  createBlockRule = require('./createBlockRule'),
   deleteRule = require('./deleteRule'),
   save = require('./save');
 
@@ -13,18 +14,8 @@ exports = module.exports = deviceName => new Promise((resolve, reject) => {
   });
 })
 .then(addr => {
-  const rule = {
-    chain: 'FORWARD',
-    proto: 'tcp',
-    src: addr,
-    target: 'REJECT',
-    extra: ['--reject-with', 'tcp-reset']
-  };
+  const rule = createBlockRule(addr);
   return checkRuleExists(rule)
-    .then(exists => {
-      console.log(`rule ${exists ? 'exists' : 'does not exist'}`);
-      return exists;
-    })
     .then(exists => exists ? deleteRule(rule) : null);
 })
 .then(() => save());
