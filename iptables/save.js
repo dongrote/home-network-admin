@@ -4,7 +4,12 @@ const cp = require('child_process'),
   constants = require('./constants');
 
 exports = module.exports = new Promise((resolve, reject) => {
-  const child = cp.spawn('iptables-save', {stdio: ['ignore', fs.createWriteStream(constants.iptablesRulesPath), 'ignore']});
-  child.on('exit', () => resolve());
-  child.on('error', reject);
+  const filestream = fs.createWriteStream(constants.iptablesRulesPath);
+  filestream
+    .on('error', reject)
+    .on('open', () => {
+      const child = cp.spawn('iptables-save', {stdio: ['ignore', filestream, 'ignore']});
+      child.on('exit', () => resolve());
+      child.on('error', reject);
+    });
 });
