@@ -6,7 +6,7 @@ const fs = require('fs'),
 fs.readdirSync(__dirname)
   .filter(fname => fname !== 'index.js' && fname.endsWith('.js'))
   .map(fname => path.basename(fname, '.js'))
-  .each(fname => {
+  .forEach(fname => {
     methods[fname] = require(`./${fname}`);
   });
 
