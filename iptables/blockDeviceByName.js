@@ -1,5 +1,5 @@
 'use strict';
-const appendRule = require('./appendRule'),
+const pushRule = require('./pushRule'),
   checkRuleExists = require('./checkRuleExists'),
   createBlockRule = require('./createBlockRule'),
   dns = require('dns'),
@@ -11,6 +11,6 @@ exports = module.exports = deviceName => new Promise((resolve, reject) => {
 .then(addr => {
   const rule = createBlockRule(addr);
   return checkRuleExists(rule)
-    .then(exists => exists ? null : appendRule(rule));
+    .then(exists => exists ? null : pushRule(rule));
 })
 .then(() => save());
