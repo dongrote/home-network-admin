@@ -2,8 +2,10 @@ import React from 'react';
 import {Container, Header, Grid} from 'semantic-ui-react';
 import WakeUpButton from './WakeUpButton';
 import BlockableServiceButton from './BlockableServiceButton';
+import MFATokenInput from './MFATokenInput';
 
-export default () => (
+export default () => document.cookie.split(';').some(item => item.startsWith('jwt='))
+  ? (
   <Container fluid>
     <Grid centered>
       <Grid.Row>
@@ -20,4 +22,13 @@ export default () => (
       </Grid.Row>
     </Grid>
   </Container>
-);
+  )
+  : (
+    <Container>
+      <Grid centered>
+        <Grid.Row>
+          <MFATokenInput onSubmit={() => window.location.reload()}/>
+        </Grid.Row>
+      </Grid>
+    </Container>
+  );
