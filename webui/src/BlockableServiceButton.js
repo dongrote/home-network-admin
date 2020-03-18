@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import BlockButton from './BlockButton';
-import UnblockButton from './UnblockButton';
+import BlockServiceButton from './BlockServiceButton';
+import UnblockServiceButton from './UnblockServiceButton';
 
 class BlockableServiceButton extends Component {
   state = {blocked: false};
@@ -21,13 +21,13 @@ class BlockableServiceButton extends Component {
 
   render() {
     return this.state.blocked
-      ? <UnblockButton
+      ? <UnblockServiceButton
           icon={this.props.icon}
           service={this.props.service}
           canonicalService={this.props.canonicalService}
           onClick={() => this.clicked()}
         />
-      : <BlockButton
+      : <BlockServiceButton
           icon={this.props.icon}
           service={this.props.service}
           canonicalService={this.props.canonicalService}
