@@ -4,12 +4,12 @@ const notp = require('notp'),
   moment = require('moment'),
   jsonwebtoken = require('jsonwebtoken');
 
-exports = module.exports = (key, token) => new Promise((resolve, reject) => {
-  const totpVerify = notp.totp.verify(token, key);
+exports = module.exports = (mfaKey, token, jwtKey) => new Promise((resolve, reject) => {
+  const totpVerify = notp.totp.verify(token, mfaKey);
   if (totpVerify === null) {
     return resolve({verified: false});
   }
-  jsonwebtoken.sign({}, key, {issuer: constants.jwtIssuer, expiresIn: '1d'}, (err, signed) => {
+  jsonwebtoken.sign({}, jwtKey, {algorithm: 'HS256', issuer: constants.jwtIssuer, expiresIn: '1d'}, (err, signed) => {
     if (err) {
       return reject(err);
     }

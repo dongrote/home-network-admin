@@ -6,7 +6,7 @@ const _ = require('lodash'),
 exports = module.exports = (req, res, next) => {
   const token = _.get(req.query, 'token', '');
   return core.auth
-    .verifyMfaToken(env.mfaKey(), token)
+    .verifyMfaToken(env.mfaKey(), token, env.jwtKey())
     .then(result => {
       if (result.verified) {
         res.cookie('jwt', result.jwt.signed, {expires: result.jwt.expiration});
