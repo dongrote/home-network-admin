@@ -6,7 +6,6 @@ class BlockableDeviceButton extends Component {
   state = {blocked: false};
 
   async updateBlocked() {
-    console.log(`fetch(/api/iptables/blocked/${this.props.device})`);
     let res = await fetch(`/api/iptables/blocked/${this.props.device}`);
     let json = await res.json();
     this.setState({blocked: json.blocked});

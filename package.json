@@ -22,6 +22,7 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.0",
     "thirty-two": "^1.0.2",
-    "tough-cookie": "^3.0.0"
+    "tough-cookie": "^3.0.0",
+    "yaml": "^1.8.2"
   }
 }

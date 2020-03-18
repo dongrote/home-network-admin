@@ -1,30 +1,33 @@
 import React from 'react';
-import {Container, Header, Grid} from 'semantic-ui-react';
+import {Container, Header, Grid, Segment} from 'semantic-ui-react';
 import WakeUpButton from './WakeUpButton';
 import BlockableServiceButton from './BlockableServiceButton';
-import BlockableDeviceButton from './BlockableDeviceButton';
+import BlockableDevices from './BlockableDevices';
 import MFATokenInput from './MFATokenInput';
 
 export default () => document.cookie.split(';').some(item => item.startsWith('jwt='))
   ? (
-  <Container fluid>
-    <Grid centered>
-      <Grid.Row>
-        <Header as='h1'>Siri Shorcuts</Header>
-      </Grid.Row>
-      <Grid.Row>
-        <WakeUpButton mac='70:8b:cd:57:1b:af' hostname='Centricube' />
-      </Grid.Row>
-      <Grid.Row>
-        <BlockableDeviceButton icon='laptop' device='damari-chromebook' canonicalDevice="Damari's Chromebook" />
-      </Grid.Row>
-      <Grid.Row>
-        <BlockableServiceButton icon='youtube' canonicalService='YouTube' service='youtube' />
-      </Grid.Row>
-      <Grid.Row>
-        <BlockableServiceButton icon='twitch' canonicalService='Twitch' service='twitch' />
-      </Grid.Row>
-    </Grid>
+  <Container>
+    <Segment.Group>
+      <Segment color='yellow'>
+        <Header as='h2' textAlign='left'>Power</Header>
+        <Segment vertical textAlign='center'>
+          <WakeUpButton mac='70:8b:cd:57:1b:af' hostname='Centricube' />
+        </Segment>
+      </Segment>
+      <Segment color='purple'>
+        <BlockableDevices />
+      </Segment>
+      <Segment color='olive'>
+        <Header as='h2' textAlign='left'>Services</Header>
+        <Segment vertical textAlign='center'>
+          <BlockableServiceButton icon='youtube' canonicalService='YouTube' service='youtube' />
+        </Segment>
+        <Segment vertical textAlign='center'>
+          <BlockableServiceButton icon='twitch' canonicalService='Twitch' service='twitch' />
+        </Segment>
+      </Segment>
+    </Segment.Group>
   </Container>
   )
   : (
