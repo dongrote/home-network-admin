@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+require('dotenv').config();
+const cp = require('child_process'),
+  base32 = require('thirty-two');
+
+const encodeForGoogle = key => base32.encode(key).toString().replace(/=/g, '');
+const generateKeyUri = key => `otpauth://totp/siri-shortcut-server?secret=${encodeForGoogle(key)}&issuer=siri-shortcut-server`;
+
+cp.spawnSync('npx', ['qrcode', generateKeyUri(process.env.MFA_KEY)], {stdio: 'inherit'});
