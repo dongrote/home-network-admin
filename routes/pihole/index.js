@@ -2,8 +2,10 @@
 const router = require('express').Router(),
   block = require('./block'),
   unblock = require('./unblock'),
-  status = require('./status');
+  status = require('./status'),
+  available = require('./available');
 
+router.get('/available', available);
 router.patch('/youtube/block', block.YouTube);
 router.patch('/twitch/block', block.Twitch);
 router.patch('/youtube/unblock', unblock.YouTube);
