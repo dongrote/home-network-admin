@@ -22,6 +22,17 @@ class MFATokenInput extends Component {
     this.setState({token});
   }
 
+  onTokenPaste(event) {
+    const paste = (event.clipboardData || window.clipboardData).getData('text');
+    let pasteToken = '';
+    paste.split('').forEach(c => {
+      if (c >= '0' || c <= '9') {
+        pasteToken += c;
+      }
+    });
+    this.setState({token: `${this.state.token}${pasteToken}`.slice(0, 6)});
+  }
+
   onSubmitClick() {
     fetch(`/api/auth?token=${this.state.token}`)
       .then(() => this.props.onSubmit())
@@ -33,7 +44,7 @@ class MFATokenInput extends Component {
       <Form>
         <Form.Field>
           <label>Token</label>
-          <input type='tel' placeholder='- - -  - - -' value={this.state.token} onKeyDown={event => this.updateTokenInput(event.keyCode)} />
+          <input type='tel' placeholder='- - -  - - -' value={this.state.token} onKeyDown={event => this.updateTokenInput(event.keyCode)} onPaste={event => this.onTokenPaste(event)} />
         </Form.Field>
         <Button type='submit' disabled={this.state.token.length !== 6} onClick={() => this.onSubmitClick()} >Submit</Button>
       </Form>
