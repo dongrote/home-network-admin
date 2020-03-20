@@ -7,8 +7,12 @@ class BlockableDeviceButton extends Component {
 
   async updateBlocked() {
     let res = await fetch(`/api/iptables/blocked/${this.props.device}`);
+    if (res.status === 401) {
+      return this.props.onUnauthorized();
+    }
     let json = await res.json();
     this.setState({blocked: json.blocked});
+    setTimeout(() => this.updateBlocked(), 30000);
   }
 
   async componentDidMount() {

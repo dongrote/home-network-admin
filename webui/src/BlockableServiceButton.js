@@ -7,8 +7,12 @@ class BlockableServiceButton extends Component {
 
   async updateBlocked() {
     let res = await fetch(`/api/pihole/${this.props.service}/status`);
+    if (res.status === 401) {
+      return this.props.onUnauthorized();
+    }
     let json = await res.json();
     this.setState({blocked: json.blocked});
+    setTimeout(() => this.updateBlocked(), 30000);
   }
 
   async componentDidMount() {
