@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
-import {Form, Button} from 'semantic-ui-react';
+import React, {Component, createRef } from 'react';
+import {Card, Grid, Form, Input, Button, Segment} from 'semantic-ui-react';
 
 class MFATokenInput extends Component {
+  inputRef = createRef();
   state = {token: ''};
 
   updateTokenInput(keyCode) {
@@ -39,15 +40,42 @@ class MFATokenInput extends Component {
       .catch(() => this.props.onSubmit());
   }
 
+  componentDidMount() {
+    this.inputRef.current.focus();
+  }
+
   render() {
     return (
-      <Form>
-        <Form.Field>
-          <label>Token</label>
-          <input type='tel' placeholder='- - -  - - -' value={this.state.token} onKeyDown={event => this.updateTokenInput(event.keyCode)} onPaste={event => this.onTokenPaste(event)} />
-        </Form.Field>
-        <Button type='submit' disabled={this.state.token.length !== 6} onClick={() => this.onSubmitClick()} >Submit</Button>
-      </Form>
+      <Grid style={{ height: '100vh' }} verticalAlign='middle'>
+        <Grid.Column style={{ maxWidth: 450 }}>
+        <Card raised>
+          <Card.Content>
+            <Card.Header>Security Token</Card.Header>
+            <Card.Description>
+              <Form size='large'>
+                <Segment.Group>
+                  <Segment>
+                    <Input
+                      fluid
+                      ref={this.inputRef}
+                      type='tel'
+                      placeholder='- - -  - - -'
+                      value={this.state.token}
+                      onKeyDown={event => this.updateTokenInput(event.keyCode)}
+                      onPaste={event => this.onTokenPaste(event)}
+                      icon={{name: 'key', circular: true}}
+                    />
+                  </Segment>
+                  <Segment>
+                    <Button fluid primary size='large' submit onClick={() => this.onSubmitClick()}>Authenticate</Button>
+                  </Segment>
+                </Segment.Group>
+              </Form>
+            </Card.Description>
+          </Card.Content>
+        </Card>
+        </Grid.Column>
+      </Grid>
     );
   }
 }

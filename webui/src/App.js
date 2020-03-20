@@ -8,7 +8,7 @@ import LabeledButtonGroup from './LabeledButtonGroup';
 
 export default () => document.cookie.split(';').some(item => item.startsWith('jwt='))
   ? (
-  <Container>
+  <Container text>
     <Segment.Group>
       <BlockableDevices onUnauthorized={() => window.location.reload()} />
       <BlockableServices
@@ -24,8 +24,8 @@ export default () => document.cookie.split(';').some(item => item.startsWith('jw
   </Container>
   )
   : (
-    <Container>
-      <Grid centered>
+    <Container text>
+      <Grid centered verticalAlign='middle'>
         <Grid.Row>
           <MFATokenInput onSubmit={() => window.location.reload()}/>
         </Grid.Row>
