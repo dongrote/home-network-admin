@@ -9,10 +9,10 @@ exports = module.exports = (mfaKey, token, jwtKey) => new Promise((resolve, reje
   if (totpVerify === null) {
     return resolve({verified: false});
   }
-  jsonwebtoken.sign({}, jwtKey, {algorithm: 'HS256', issuer: constants.jwtIssuer, expiresIn: '1h'}, (err, signed) => {
+  jsonwebtoken.sign({}, jwtKey, {algorithm: 'HS256', issuer: constants.jwtIssuer, expiresIn: '5m'}, (err, signed) => {
     if (err) {
       return reject(err);
     }
-    resolve({verified: true, jwt: {signed, expiration: moment().add(1, 'hours').toDate()}});
+    resolve({verified: true, jwt: {signed, expiration: moment().add(5, 'm').toDate()}});
   });
 });
