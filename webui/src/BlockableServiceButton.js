@@ -6,7 +6,7 @@ class BlockableServiceButton extends Component {
   state = {blocked: false};
 
   async updateBlocked() {
-    let res = await fetch(`/api/pihole/${this.props.service}/status`);
+    let res = await fetch(`/api/services/blocked/?service=${encodeURIComponent(this.props.service)}`);
     if (res.status === 401) {
       return this.props.onUnauthorized();
     }

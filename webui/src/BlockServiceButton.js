@@ -6,7 +6,7 @@ export default props => (
     icon
     negative
     size='huge'
-    onClick={() => fetch(`/api/pihole/${props.service}/block`, {method: 'PATCH'})
+    onClick={() => fetch(`/api/services/block?service=${encodeURIComponent(props.service)}`)
       .then(() => props.onClick())}
   >
     <Icon name={props.icon} />

@@ -44,9 +44,19 @@ class PiHoleController {
     return this.token;
   }
 
-  async domainIsBlocked(domain) {
+  async blacklist() {
     const blacklist = _.flattenDeep(await request.get({uri: `${this.baseUrl}${constants.PiHoleGetBlacklist}`, json: true}));
+    return blacklist;
+  }
+
+  async domainIsBlocked(domain) {
+    const blacklist = await this.blacklist();
     return _.includes(blacklist, domain);
+  }
+
+  async domainsAreBlocked(domains) {
+    const blacklist = await this.blacklist();
+    return domains.every(domain => _.includes(blacklist, domain));
   }
 
   async addWildcardMatch(domain) {

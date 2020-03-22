@@ -1,5 +1,6 @@
 'use strict';
-const env = require('../../env'),
+const _ = require('lodash'),
+  env = require('../../env'),
   yaml = require('yaml'),
   fs = require('fs');
 
@@ -8,7 +9,7 @@ exports = module.exports = () => new Promise((resolve, reject) => {
   fs.readFile(env.networkDevicesYamlFile(), (err, data) => {
     if (err) return reject(err);
     try {
-      networkDevices = yaml.parse(data.toString())
+      networkDevices = _.get(yaml.parse(data.toString()), 'devices', []);
     } catch (err) {
       return reject(err);
     }

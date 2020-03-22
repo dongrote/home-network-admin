@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Segment, Header } from 'semantic-ui-react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import BlockableDeviceButton from './BlockableDeviceButton';
 

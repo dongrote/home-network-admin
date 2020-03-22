@@ -6,5 +6,5 @@ exports = module.exports = {
   jwtKey: () => _.get(process.env, 'JWT_KEY', 'secret'),
   piholeUri: () => _.get(process.env, 'PIHOLE_URI', 'http://pi.hole'),
   networkDevicesYamlFile: () => _.get(process.env, 'NETWORK_DEVICES_YAML', 'network-devices.yaml'),
-  servicesYamlFile: () => _.get(process.env, 'SERVICES_YAML', 'services.yaml'),
+  networkServicesYamlFile: () => _.get(process.env, 'NETWORK_SERVICES_YAML', 'network-services.yaml'),
 };
