@@ -4,7 +4,7 @@ import { Segment, Header } from 'semantic-ui-react';
 const LabeledButtonGroup = props => {
   props.children = Array.isArray(props.children) ? props.children : [props.children];
   return (
-  <Segment color={props.color}>
+  <Segment color={props.color} loading={props.loading}>
     <Segment vertical>
       <Header as='h2' textAlign='left'>{props.label}</Header>
     </Segment>

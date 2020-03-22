@@ -3,7 +3,7 @@ import LabeledButtonGroup from './LabeledButtonGroup';
 import BlockableDeviceButton from './BlockableDeviceButton';
 
 class BlockableDevices extends Component {
-  state = {devices: []};
+  state = {devices: [], loading: true};
 
   async updateAvailableDevices() {
     var res = await fetch('/api/iptables/available');
@@ -11,7 +11,7 @@ class BlockableDevices extends Component {
       return this.props.onUnauthorized();
     }
     var data = await res.json();
-    this.setState({devices: data.devices});
+    this.setState({devices: data.devices, loading: false});
     setTimeout(() => this.updateAvailableDevices(), 30000);
   }
 
@@ -21,7 +21,7 @@ class BlockableDevices extends Component {
 
   render() {
     return (
-      <LabeledButtonGroup color='purple' label='Devices'>
+      <LabeledButtonGroup color='purple' label='Devices' loading={this.state.loading}>
         {this.state.devices.map((dev, i) => <BlockableDeviceButton key={i} icon={dev.icon} device={dev.name} canonicalDevice={dev.canonicalName} onUnauthorized={() => this.props.onUnauthorized()} />)}
       </LabeledButtonGroup>
     );
