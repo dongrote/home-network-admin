@@ -3,7 +3,7 @@ import LabeledButtonGroup from './LabeledButtonGroup';
 import BlockableServiceButton from './BlockableServiceButton';
 
 class BlockableServices extends Component {
-  state = {services: []};
+  state = {services: [], loading: true};
 
   async updateAvailableServices() {
     var res = await fetch('/api/services/available');
@@ -11,7 +11,7 @@ class BlockableServices extends Component {
       return this.props.onUnauthorized();
     }
     var json = await res.json();
-    this.setState({services: json.services});
+    this.setState({services: json.services, loading: false});
     setTimeout(() => this.updateAvailableServices(), 30000);
   }
 
@@ -21,7 +21,7 @@ class BlockableServices extends Component {
 
   render() {
     return (
-      <LabeledButtonGroup color='olive' label='Services'>
+      <LabeledButtonGroup color='olive' label='Services' loading={this.state.loading}>
         {this.state.services.map((service, i) => 
           <BlockableServiceButton
             key={i}

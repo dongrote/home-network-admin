@@ -1,8 +1,9 @@
 import React from 'react';
-import {Button, Icon} from 'semantic-ui-react';
+import AsyncButton from './AsyncButton';
+import {Icon} from 'semantic-ui-react';
 
 export default props => (
-  <Button
+  <AsyncButton
     icon
     negative
     size='huge'
@@ -11,5 +12,5 @@ export default props => (
   >
     <Icon name={props.icon} />
     Block {props.canonicalDevice}
-  </Button>
+  </AsyncButton>
 );
