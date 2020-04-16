@@ -1,6 +1,6 @@
 'use strict';
-const iptables = require('../../iptables');
+const core = require('../../core');
 
-exports = module.exports = (req, res, next) => iptables.blockDeviceByName(req.params.device)
+exports = module.exports = (req, res, next) => core.devices.block(req.params.device)
   .then(() => res.sendStatus(200))
   .catch(next);
