@@ -7,6 +7,7 @@ export default props => (
     icon
     positive
     size='huge'
+    error={props.error}
     onClick={() => fetch(`/api/iptables/block/${props.device}`, {method: 'DELETE'})
       .then(() => props.onClick())}
   >

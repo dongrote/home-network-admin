@@ -7,6 +7,7 @@ export default props => (
     icon
     negative
     size='huge'
+    error={props.error}
     onClick={() => fetch(`/api/iptables/block/${props.device}`, {method: 'POST'})
       .then(() => props.onClick())}
   >
