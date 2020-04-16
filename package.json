@@ -1,9 +1,10 @@
 {
-  "name": "siri-shortcut-server",
+  "name": "home-network-admin",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm --prefix webui run build && rm -rf public && mkdir public && cp -r webui/build/* public/ && node ./bin/www"
+    "build-and-install": "npm --prefix webui run build && rm -rf public && mkdir public && cp -r webui/build/* public/",
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
