@@ -1,10 +1,15 @@
 import React from 'react';
+import io from 'socket.io-client';
 import {Container, Grid, Segment} from 'semantic-ui-react';
 import WakeUpButton from './WakeUpButton';
 import BlockableDevices from './BlockableDevices';
 import MFATokenInput from './MFATokenInput';
 import BlockableServices from './BlockableServices';
 import LabeledButtonGroup from './LabeledButtonGroup';
+
+const socket = io();
+
+socket.on('connect', () => console.log('socket.io connected'));
 
 export default () => document.cookie.split(';').some(item => item.startsWith('jwt='))
   ? (

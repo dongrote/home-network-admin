@@ -1,27 +1,33 @@
 #!/usr/bin/env node
-
 require('dotenv').config();
 
 /**
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('toggle-youtube:server');
-var http = require('http');
+const app = require('../app'),
+  core = require('../core'),
+  log = require('debug-logger')('home-network-admin:www'),
+  http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = Number(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = http.createServer(app),
+  io = require('socket.io')(server);
+
+io.on('connect', client => {
+  client.on('disconnect', () => core.Websockets.clientDisconnect(client));
+  core.Websockets.clientConnect(client);
+});
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -88,5 +94,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  log.info('Listening on ' + bind);
 }
