@@ -7,11 +7,9 @@ export default props => props.blocked
       icon={props.icon}
       device={props.device}
       canonicalDevice={props.canonicalDevice}
-      onClick={() => props.onClick()}
     />
   : <BlockDeviceButton
       icon={props.icon}
       device={props.device}
       canonicalDevice={props.canonicalDevice}
-      onClick={() => props.onClick()}
     />;
