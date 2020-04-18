@@ -34,7 +34,6 @@ class App extends Component {
   async updateState() {
     await this.fetchDevices();
     await this.fetchServices();
-    setTimeout(() => this.updateState(), 10000);
   }
 
   componentDidMount() {
