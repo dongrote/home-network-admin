@@ -9,9 +9,7 @@ import LabeledButtonGroup from './LabeledButtonGroup';
 
 const socket = io();
 
-socket
-  .on('connect', () => console.log('socket.io connected'))
-  .on('devices', devicesState => );
+socket.on('connect', () => console.log('socket.io connected'));
 
 class App extends Component {
   state = {
@@ -22,15 +20,21 @@ class App extends Component {
   };
 
   async fetchDevices() {
-    var res = await fetch('/api/devices');
+    var res = await fetch('/api/devices/state');
     var json = await res.json();
-    this.setState({devices: json.devices});
+    this.setState({devices: json.state});
   }
 
   async fetchServices() {
-    var res = await fetch('/api/services');
+    var res = await fetch('/api/services/state');
     var json = await res.json();
-    this.setState({services: json.services});
+    this.setState({services: json.state});
+  }
+
+  async updateState() {
+    await this.fetchDevices();
+    await this.fetchServices();
+    setTimeout(() => this.updateState(), 10000);
   }
 
   componentDidMount() {
@@ -38,6 +42,7 @@ class App extends Component {
     socket
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}));
+    this.updateState();
   }
 
   render() {
@@ -48,10 +53,13 @@ class App extends Component {
             <BlockableDevices
               devices={this.state.devices}
               onUnauthorized={() => window.location.reload()}
+              onMutate={() => this.fetchDevices()}
             />
             <BlockableServices
               services={this.state.services}
-              onUnauthorized={() => window.location.reload()}/>
+              onUnauthorized={() => window.location.reload()}
+              onMutate={() => this.fetchServices()}
+            />
             <LabeledButtonGroup color='yellow' label='Power'>
               <WakeUpButton mac='70:8b:cd:57:1b:af' hostname='Centricube' />
             </LabeledButtonGroup>

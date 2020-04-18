@@ -1,21 +1,28 @@
 'use strict';
-const env = require('../../env'),
+const _ = require('lodash'),
+  env = require('../../env'),
   lookupByName = require('./lookupByName'),
-  {PiHoleController} = require('../../controllers');
+  pihole = require('../pihole');
 
-exports = module.exports = serviceName => {
-  const controller = new PiHoleController(env.piholeUri());
-  return lookupByName(serviceName)
-    .then(service => new Promise((resolve, reject) => {
-      (function nextDomain(i) {
-        if (i < service.domains.length) {
-          const dom = service.domains[i];
-          controller.removeRegexMatch(dom.regex)
-            .then(() => nextDomain(i + 1))
-            .catch(reject);
+exports = module.exports = serviceName => Promise
+  .all([
+    pihole.session(env.piholeUri(), env.piholeWebpassword()),
+    lookupByName(serviceName),
+  ])
+  .then(([piholeSession, service]) => pihole.blacklist(piholeSession)
+    .then(blacklist => new Promise((resolve, reject) => {
+      (function next(i) {
+        if (i < _.size(service.domains)) {
+          const domain = service.domains[i];
+          if (_.includes(blacklist, domain.regex)) {
+            pihole.subRegex(piholeSession, domain.regex)
+              .then(() => next(i + 1))
+              .catch(reject);
+          } else {
+            next(i + 1);
+          }
         } else {
           resolve();
         }
       }(0));
-    }));
-};
+    })));

@@ -1,21 +1,8 @@
 'use strict';
 const _ = require('lodash'),
-  available = require('./available'),
-  blocked = require('./blocked');
+  env = require('../../env'),
+  pihole = require('../pihole'),
+  available = require('./available');
 
-exports = module.exports = () => available()
-  .then(services => new Promise((resolve, reject) => {
-    (function next(i) {
-      if (i < _.size(services)) {
-        const service = services[i];
-        blocked(service.name)
-          .then(blocked => {
-            service.blocked = blocked;
-            next(i + 1);
-          })
-          .catch(reject);
-      } else {
-        resolve(services);
-      }
-    }(0));
-  }));
+exports = module.exports = () => Promise.all([available(), pihole.blacklist({uri: env.piholeUri()})])
+  .then(([services, blacklist]) => _.each(services, service => _.set(service, 'blocked', _.every(_.get(service, 'domains', []), d => _.includes(blacklist, d.regex)))));
