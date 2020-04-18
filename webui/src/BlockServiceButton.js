@@ -7,8 +7,7 @@ export default props => (
     icon
     negative
     size='huge'
-    onClick={() => fetch(`/api/services/block?service=${encodeURIComponent(props.service)}`)
-      .then(() => props.onClick())}
+    onClick={() => fetch(`/api/services/block?service=${encodeURIComponent(props.service)}`)}
   >
     <Icon name={props.icon} />
     Block {props.canonicalService}

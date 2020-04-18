@@ -24,6 +24,7 @@ app.set('port', port);
 const server = http.createServer(app),
   io = require('socket.io')(server);
 
+core.Websockets.server(io);
 io.on('connect', client => {
   client.on('disconnect', () => core.Websockets.clientDisconnect(client));
   core.Websockets.clientConnect(client);

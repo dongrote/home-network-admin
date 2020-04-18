@@ -52,12 +52,10 @@ class App extends Component {
             <BlockableDevices
               devices={this.state.devices}
               onUnauthorized={() => window.location.reload()}
-              onMutate={() => this.fetchDevices()}
             />
             <BlockableServices
               services={this.state.services}
               onUnauthorized={() => window.location.reload()}
-              onMutate={() => this.fetchServices()}
             />
             <LabeledButtonGroup color='yellow' label='Power'>
               <WakeUpButton mac='70:8b:cd:57:1b:af' hostname='Centricube' />

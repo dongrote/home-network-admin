@@ -2,6 +2,7 @@
 const _ = require('lodash'),
   env = require('../../env'),
   lookupByName = require('./lookupByName'),
+  emitState = require('./emitState'),
   pihole = require('../pihole');
 
 exports = module.exports = serviceName => Promise
@@ -25,4 +26,5 @@ exports = module.exports = serviceName => Promise
           resolve();
         }
       }(0));
-    })));
+    })))
+  .then(() => emitState());

@@ -11,7 +11,6 @@ export default props => (
       canonicalDevice={dev.canonicalName}
       blocked={dev.blocked}
       onUnauthorized={props.onUnauthorized}
-      onClick={props.onMutate}
     />)}
   </LabeledButtonGroup>
 );

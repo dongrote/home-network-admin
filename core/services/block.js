@@ -3,6 +3,7 @@ const _ = require('lodash'),
   env = require('../../env'),
   lookupByName = require('./lookupByName'),
   pihole = require('../pihole'),
+  emitState = require('./emitState'),
   log = require('debug-logger')('core:services:block');
 
 exports = module.exports = serviceName => Promise
@@ -28,4 +29,5 @@ exports = module.exports = serviceName => Promise
           resolve();
         }
       }(0));
-    })));
+    })))
+  .then(() => emitState());

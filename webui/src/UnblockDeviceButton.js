@@ -7,8 +7,7 @@ export default props => (
     icon
     positive
     size='huge'
-    onClick={() => fetch(`/api/iptables/block/${props.device}`, {method: 'DELETE'})
-      .then(() => props.onClick())}
+    onClick={() => fetch(`/api/iptables/block/${props.device}`, {method: 'DELETE'})}
   >
     <Icon name={props.icon} />
     Unblock {props.canonicalDevice}
