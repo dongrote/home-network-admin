@@ -1,5 +1,4 @@
 'use strict';
-const PiHoleController = require('./PiHoleController'),
-  WakeOnLan = require('./WakeOnLan');
+const WakeOnLan = require('./WakeOnLan');
 
-exports = module.exports = {PiHoleController, WakeOnLan};
+exports = module.exports = {WakeOnLan};

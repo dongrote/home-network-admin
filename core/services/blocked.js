@@ -1,11 +1,6 @@
 'use strict';
-const _ = require('lodash'),
-  env = require('../../env'),
-  lookupByName = require('./lookupByName'),
-  {PiHoleController} = require('../../controllers');
+const pihole = require('../pihole'),
+  available = require('./available');
 
-exports = module.exports = serviceName => {
-  const controller = new PiHoleController(env.piholeUri());
-  return lookupByName(serviceName)
-    .then(service => controller.domainsAreBlocked(_.map(_.get(service, 'domains', []), d => d.regex)));
-};
+exports = module.exports = () => Promise.all([pihole.blacklist(), available()])
+  .then(([blacklist, services]) => {});

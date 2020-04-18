@@ -2,7 +2,6 @@
 const router = require('express').Router(),
   env = require('../env'),
   iptables = require('./iptables'),
-  pihole = require('./pihole'),
   wol = require('./wol'),
   auth = require('./auth'),
   services = require('./services'),
@@ -12,7 +11,6 @@ const router = require('express').Router(),
 
 router.get('/auth', auth);
 router.use('/iptables', jwtVerify, iptables);
-router.use('/pihole', jwtVerify, pihole);
 router.use('/wol', jwtVerify, wol);
 router.get('/services/state', serviceState);
 router.use('/services', jwtVerify, services);
