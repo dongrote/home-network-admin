@@ -75,7 +75,7 @@ class App extends Component {
               {this.state.wol.filter(d => !d.online).map((d, i) => <WakeUpButton
                 key={i}
                 mac={d.hwaddress}
-                hostname={d.hostname}
+                name={d.name}
                 onUnauthorized={() => this.onUnauthorized()}
               />)}
             </LabeledButtonGroup>
