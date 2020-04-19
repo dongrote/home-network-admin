@@ -72,10 +72,11 @@ class App extends Component {
               onUnauthorized={() => this.onUnauthorized()}
             />
             <LabeledButtonGroup color='yellow' label='Power'>
-              {this.state.wol.filter(d => !d.online).map((d, i) => <WakeUpButton
+              {this.state.wol.map((d, i) => <WakeUpButton
                 key={i}
                 mac={d.hwaddress}
                 name={d.name}
+                online={d.online}
                 onUnauthorized={() => this.onUnauthorized()}
               />)}
             </LabeledButtonGroup>
