@@ -8,10 +8,12 @@ export default props => props.blocked
       service={props.service}
       canonicalService={props.canonicalService}
       onClick={() => props.onClick()}
+      onUnauthorized={props.onUnauthorized}
     />
   : <BlockServiceButton
       icon={props.icon}
       service={props.service}
       canonicalService={props.canonicalService}
       onClick={() => props.onClick()}
+      onUnauthorized={props.onUnauthorized}
     />;

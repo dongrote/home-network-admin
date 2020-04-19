@@ -9,8 +9,6 @@ import LabeledButtonGroup from './LabeledButtonGroup';
 
 const socket = io();
 
-socket.on('connect', () => console.log('socket.io connected'));
-
 class App extends Component {
   state = {
     loggedIn: false,
@@ -31,17 +29,26 @@ class App extends Component {
     this.setState({services: json.state});
   }
 
+  updateLoggedIn() {
+    this.setState({loggedIn: document.cookie.split(';').some(item => item.startsWith('jwt='))});
+  }
+
   async updateState() {
     await this.fetchDevices();
     await this.fetchServices();
+    this.updateLoggedIn();
   }
 
   componentDidMount() {
-    this.setState({loggedIn: document.cookie.split(';').some(item => item.startsWith('jwt='))});
     socket
+      .on('ping', () => this.updateLoggedIn())
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}));
     this.updateState();
+  }
+
+  onUnauthorized() {
+    window.location.reload();
   }
 
   render() {
@@ -51,14 +58,18 @@ class App extends Component {
           <Segment.Group>
             <BlockableDevices
               devices={this.state.devices}
-              onUnauthorized={() => window.location.reload()}
+              onUnauthorized={() => this.onUnauthorized()}
             />
             <BlockableServices
               services={this.state.services}
-              onUnauthorized={() => window.location.reload()}
+              onUnauthorized={() => this.onUnauthorized()}
             />
             <LabeledButtonGroup color='yellow' label='Power'>
-              <WakeUpButton mac='70:8b:cd:57:1b:af' hostname='Centricube' />
+              <WakeUpButton
+                mac='70:8b:cd:57:1b:af'
+                hostname='Centricube'
+                onUnauthorized={() => this.onUnauthorized()}
+              />
             </LabeledButtonGroup>
           </Segment.Group>
         </Container>
