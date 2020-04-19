@@ -10,4 +10,5 @@ exports = module.exports = {
   firewallApiUri: () => _.get(process.env, 'FIREWALL_API_URI', 'http://pi.hole:3000'),
   networkDevicesYamlFile: () => _.get(process.env, 'NETWORK_DEVICES_YAML', 'network-devices.yaml'),
   networkServicesYamlFile: () => _.get(process.env, 'NETWORK_SERVICES_YAML', 'network-services.yaml'),
+  wolDevicesYamlFile: () => _.get(process.env, 'WOL_DEVICES_YAML', 'wol-devices.yaml'),
 };

@@ -29,6 +29,12 @@ class App extends Component {
     this.setState({services: json.state});
   }
 
+  async fetchWakeOnLan() {
+    var res = await fetch('/api/wol/state');
+    var json = await res.json();
+    this.setState({wol: json.state});
+  }
+
   updateLoggedIn() {
     this.setState({loggedIn: document.cookie.split(';').some(item => item.startsWith('jwt='))});
   }
@@ -36,6 +42,7 @@ class App extends Component {
   async updateState() {
     await this.fetchDevices();
     await this.fetchServices();
+    await this.fetchWakeOnLan();
     this.updateLoggedIn();
   }
 
@@ -65,11 +72,12 @@ class App extends Component {
               onUnauthorized={() => this.onUnauthorized()}
             />
             <LabeledButtonGroup color='yellow' label='Power'>
-              <WakeUpButton
-                mac='70:8b:cd:57:1b:af'
-                hostname='Centricube'
+              {this.state.wol.filter(d => !d.online).map((d, i) => <WakeUpButton
+                key={i}
+                mac={d.hwaddress}
+                hostname={d.hostname}
                 onUnauthorized={() => this.onUnauthorized()}
-              />
+              />)}
             </LabeledButtonGroup>
           </Segment.Group>
         </Container>
