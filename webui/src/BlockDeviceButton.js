@@ -7,7 +7,8 @@ export default props => (
     icon
     negative
     size='huge'
-    onClick={() => fetch(`/api/iptables/block/${props.device}`, {method: 'POST'})}
+    onClick={() => fetch(`/api/iptables/block/${props.device}`, {method: 'POST'})
+      .then(res => res.status === 401 ? props.onUnauthorized() : null)}
   >
     <Icon name={props.icon} />
     Block {props.canonicalDevice}
