@@ -1,5 +1,5 @@
 'use strict';
-const env = require('../env'),
+const env = require('../../env'),
   url = require('url'),
   rp = require('request-promise-native');
 

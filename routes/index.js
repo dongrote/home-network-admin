@@ -5,12 +5,14 @@ const router = require('express').Router(),
   wol = require('./wol'),
   auth = require('./auth'),
   services = require('./services'),
+  wolState = require('./wol/state'),
   serviceState = require('./services/state'),
   deviceState = require('./devices/state'),
   jwtVerify = require('../middleware/jwtVerify')(env.jwtKey());
 
 router.get('/auth', auth);
 router.use('/iptables', jwtVerify, iptables);
+router.get('/wol/state', wolState);
 router.use('/wol', jwtVerify, wol);
 router.get('/services/state', serviceState);
 router.use('/services', jwtVerify, services);
