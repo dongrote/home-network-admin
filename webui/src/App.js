@@ -40,10 +40,8 @@ class App extends Component {
   }
 
   async updateState() {
-    await this.fetchDevices();
-    await this.fetchServices();
-    await this.fetchWakeOnLan();
     this.updateLoggedIn();
+    await [this.fetchDevices(), this.fetchServices(), this.fetchWakeOnLan()];
   }
 
   componentDidMount() {
