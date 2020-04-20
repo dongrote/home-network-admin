@@ -7,6 +7,7 @@ export default props => (
     icon
     negative
     size='huge'
+    disabled={!props.online}
     onClick={() => fetch(`/api/iptables/block/${props.device}`, {method: 'POST'})
       .then(res => res.status === 401 ? props.onUnauthorized() : null)}
   >

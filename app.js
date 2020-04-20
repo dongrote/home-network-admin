@@ -1,11 +1,12 @@
-var _ = require('lodash');
-var express = require('express');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var log = require('debug-logger')('app');
-var indexRouter = require('./routes/index');
-
-var app = express();
+'use strict';
+const express = require('express'),
+  app = express();
+exports = module.exports = app;
+const _ = require('lodash'),
+  cookieParser = require('cookie-parser'),
+  logger = require('morgan'),
+  log = require('debug-logger')('app'),
+  indexRouter = require('./routes/index');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -19,5 +20,3 @@ app.use((err, req, res, next) => {
   log.error(err);
   res.status(_.get(err, 'statusCode', 500)).json({err});
 });
-
-module.exports = app;

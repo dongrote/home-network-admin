@@ -1,4 +1,5 @@
 import React from 'react';
+import {Header, Label} from 'semantic-ui-react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import BlockableDeviceButton from './BlockableDeviceButton';
 
@@ -11,6 +12,7 @@ export default props => (
       canonicalDevice={dev.canonicalName}
       blocked={dev.blocked}
       onUnauthorized={props.onUnauthorized}
+      online={dev.online}
     />)}
   </LabeledButtonGroup>
 );

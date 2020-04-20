@@ -8,10 +8,12 @@ export default props => props.blocked
       device={props.device}
       canonicalDevice={props.canonicalDevice}
       onUnauthorized={props.onUnauthorized}
+      online={props.online}
     />
   : <BlockDeviceButton
       icon={props.icon}
       device={props.device}
       canonicalDevice={props.canonicalDevice}
       onUnauthorized={props.onUnauthorized}
+      online={props.online}
     />;

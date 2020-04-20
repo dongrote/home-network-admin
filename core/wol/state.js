@@ -1,9 +1,23 @@
 'use strict';
 const _ = require('lodash'),
   available = require('./available'),
-  env = require('../../env'),
-  rp = require('request-promise-native');
+  devices = require('../devices'),
+  log = require('debug-logger')('core:wol:state');
 
-exports = module.exports = () => Promise
-  .all([available(), rp.get({json: true, uri: `${env.firewallApiUri()}/api/ethernet/online`})])
-  .then(([devices, online]) => _.map(devices, d => _.set(d, 'online', _.includes(online, _.get(d, 'hwaddress')))));
+exports = module.exports = () => available()
+  .then(hosts => new Promise((resolve, reject) => {
+    log.debug(`collecting state on ${_.size(hosts)} hosts`);
+    (function next(i) {
+      if (i < _.size(hosts)) {
+        const host = hosts[i];
+        devices.online(host.hostname)
+          .then(online => {
+            host.online = online;
+            next(i + 1);
+          })
+          .catch(reject);
+      } else {
+        resolve(hosts);
+      }
+    }(0));
+  }));

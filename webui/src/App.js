@@ -40,17 +40,16 @@ class App extends Component {
   }
 
   async updateState() {
-    await this.fetchDevices();
-    await this.fetchServices();
-    await this.fetchWakeOnLan();
     this.updateLoggedIn();
+    await [this.fetchDevices(), this.fetchServices(), this.fetchWakeOnLan()];
   }
 
   componentDidMount() {
     socket
       .on('ping', () => this.updateLoggedIn())
       .on('devices', devices => this.setState({devices}))
-      .on('services', services => this.setState({services}));
+      .on('services', services => this.setState({services}))
+      .on('wol', wol => this.setState({wol}));
     this.updateState();
   }
 
