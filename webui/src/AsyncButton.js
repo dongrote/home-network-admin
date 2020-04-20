@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import {Button} from 'semantic-ui-react';
+import _ from 'lodash';
 
 class AsyncButton extends Component {
   state = {loading: false, disabled: false};
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      disabled: _.get(props, 'disabled', false),
+    };
+  }
 
   click() {
     this.setState({loading: true, disabled: true});

@@ -50,7 +50,8 @@ class App extends Component {
     socket
       .on('ping', () => this.updateLoggedIn())
       .on('devices', devices => this.setState({devices}))
-      .on('services', services => this.setState({services}));
+      .on('services', services => this.setState({services}))
+      .on('wol', wol => this.setState({wol}));
     this.updateState();
   }
 

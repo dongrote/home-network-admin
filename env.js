@@ -11,4 +11,7 @@ exports = module.exports = {
   networkDevicesYamlFile: () => _.get(process.env, 'NETWORK_DEVICES_YAML', 'network-devices.yaml'),
   networkServicesYamlFile: () => _.get(process.env, 'NETWORK_SERVICES_YAML', 'network-services.yaml'),
   wolDevicesYamlFile: () => _.get(process.env, 'WOL_DEVICES_YAML', 'wol-devices.yaml'),
+  pingTimeout: () => Number(_.get(process.env, 'PING_TIMEOUT', '1')),
+  pingCount: () => Number(_.get(process.env, 'PING_COUNT', '1')),
+  pingInterval: () => Number(_.get(process.env, 'PING_INTERVAL', '60000')),
 };
