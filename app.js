@@ -3,8 +3,6 @@ const express = require('express'),
   app = express();
 exports = module.exports = app;
 const _ = require('lodash'),
-  env = require('./env'),
-  core = require('./core'),
   cookieParser = require('cookie-parser'),
   logger = require('morgan'),
   log = require('debug-logger')('app'),
@@ -22,8 +20,3 @@ app.use((err, req, res, next) => {
   log.error(err);
   res.status(_.get(err, 'statusCode', 500)).json({err});
 });
-
-setInterval(() => {
-  core.devices.emitState();
-  core.wol.emitState();
-}, env.pingInterval())
