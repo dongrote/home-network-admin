@@ -1,10 +1,12 @@
 'use strict';
 const _ = require('lodash'),
   available = require('./available'),
-  devices = require('../devices');
+  devices = require('../devices'),
+  log = require('debug-logger')('core:wol:state');
 
 exports = module.exports = () => available()
   .then(hosts => new Promise((resolve, reject) => {
+    log.debug(`collecting state on ${_.size(hosts)} hosts`);
     (function next(i) {
       if (i < _.size(hosts)) {
         const host = hosts[i];
