@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import {Button} from 'semantic-ui-react';
-import _ from 'lodash';
 
 class AsyncButton extends Component {
-  state = {loading: false, disabled: false};
   constructor(props) {
     super(props);
+    console.log(props);
+    console.log('disabled:', props.disabled || false);
     this.state = {
       loading: false,
-      disabled: _.get(props, 'disabled', false),
+      disabled: props.disabled || false,
     };
   }
 

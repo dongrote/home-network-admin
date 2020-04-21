@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Grid} from 'semantic-ui-react';
-import BlockableDeviceButton from './BlockableDeviceButton';
+import WakeUpButton from './WakeUpButton';
 import OnlineLabel from './OnlineLabel';
 
 class BlockableDeviceRow extends Component {
@@ -29,9 +29,8 @@ class BlockableDeviceRow extends Component {
               onlineStatus={this.state.onlineStatus} />
           </Grid.Column>
           <Grid.Column>
-            <BlockableDeviceButton
-              device={this.props.device}
-              blocked={this.props.blocked}
+            <WakeUpButton
+              mac={this.props.hwaddress}
               onUnauthorized={this.props.onUnauthorized}
             />
           </Grid.Column>

@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
 import {Container, Grid, Segment} from 'semantic-ui-react';
-import WakeUpButton from './WakeUpButton';
 import BlockableDevices from './BlockableDevices';
+import WakeOnLanDevices from './WakeOnLanDevices';
 import MFATokenInput from './MFATokenInput';
 import BlockableServices from './BlockableServices';
-import LabeledButtonGroup from './LabeledButtonGroup';
 
 const socket = io();
 
@@ -70,15 +69,10 @@ class App extends Component {
               services={this.state.services}
               onUnauthorized={() => this.onUnauthorized()}
             />
-            <LabeledButtonGroup color='yellow' label='Power'>
-              {this.state.wol.map((d, i) => <WakeUpButton
-                key={i}
-                mac={d.hwaddress}
-                name={d.name}
-                online={d.online}
-                onUnauthorized={() => this.onUnauthorized()}
-              />)}
-            </LabeledButtonGroup>
+            <WakeOnLanDevices
+              devices={this.state.wol}
+              onUnauthorized={() => this.onUnauthorized()}
+            />
           </Segment.Group>
         </Container>
         )
