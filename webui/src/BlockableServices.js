@@ -1,12 +1,13 @@
 import React from 'react';
 import LabeledButtonGroup from './LabeledButtonGroup';
-import BlockableServiceButton from './BlockableServiceButton';
+import BlockableServiceRow from './BlockableServiceRow';
 
 export default props => (
   <LabeledButtonGroup color='olive' label='Services'>
     {props.services.map((service, i) => 
-      <BlockableServiceButton
+      <BlockableServiceRow
         key={i}
+        color={service.color}
         icon={service.icon}
         canonicalService={service.canonicalName}
         service={service.name}
