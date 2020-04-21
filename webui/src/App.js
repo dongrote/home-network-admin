@@ -61,16 +61,16 @@ class App extends Component {
       ? (
         <Container text>
           <Segment.Group>
+            <WakeOnLanDevices
+              devices={this.state.wol}
+              onUnauthorized={() => this.onUnauthorized()}
+            />
             <BlockableDevices
               devices={this.state.devices}
               onUnauthorized={() => this.onUnauthorized()}
             />
             <BlockableServices
               services={this.state.services}
-              onUnauthorized={() => this.onUnauthorized()}
-            />
-            <WakeOnLanDevices
-              devices={this.state.wol}
               onUnauthorized={() => this.onUnauthorized()}
             />
           </Segment.Group>
