@@ -1,11 +1,10 @@
 import React from 'react';
-import {Header, Label} from 'semantic-ui-react';
 import LabeledButtonGroup from './LabeledButtonGroup';
-import BlockableDeviceButton from './BlockableDeviceButton';
+import BlockableDeviceRow from './BlockableDeviceRow';
 
 export default props => (
   <LabeledButtonGroup color='purple' label='Devices'>
-    {props.devices.map((dev, i) => <BlockableDeviceButton
+    {props.devices.map((dev, i) => <BlockableDeviceRow
       key={i}
       icon={dev.icon}
       device={dev.name}
