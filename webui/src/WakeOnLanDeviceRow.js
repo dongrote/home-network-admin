@@ -25,6 +25,7 @@ class BlockableDeviceRow extends Component {
         <Grid.Row columns={2} verticalAlign='middle'>
           <Grid.Column>
             <OnlineLabel
+              onClick={() => this.updateOnlineStatus()}
               canonicalName={this.props.canonicalDevice}
               onlineStatus={this.state.onlineStatus} />
           </Grid.Column>

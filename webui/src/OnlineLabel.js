@@ -14,7 +14,7 @@ const content = {
 };
 
 export default props => (
-  <Label>
+  <Label onClick={() => props.onClick ? props.onClick() : null}>
     <Icon name='power' color={colors[props.onlineStatus]} />
     {props.canonicalName}
     <Label.Detail>{content[props.onlineStatus]}</Label.Detail>
