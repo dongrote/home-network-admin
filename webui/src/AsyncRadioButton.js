@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Radio, Loader} from 'semantic-ui-react';
+import {Radio} from 'semantic-ui-react';
 
 class AsyncRadioButton extends Component {
   constructor(props) {
