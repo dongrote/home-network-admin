@@ -38,7 +38,6 @@ class App extends Component {
 
   decodeJwtCookie() {
     document.cookie.split(';').forEach(c => {
-      console.log(c);
       if (c.startsWith('jwt=')) {
         this.token = jwt.decode(c.slice(4));
       }
