@@ -1,21 +1,9 @@
 import React from 'react';
-import BlockServiceButton from './BlockServiceButton';
-import UnblockServiceButton from './UnblockServiceButton';
+import AsyncRadioButton from './AsyncRadioButton';
 
-export default props => props.blocked
-  ? <UnblockServiceButton
-      adminUser={props.adminUser}
-      icon={props.icon}
-      service={props.service}
-      canonicalService={props.canonicalService}
-      onClick={() => props.onClick()}
-      onUnauthorized={props.onUnauthorized}
-    />
-  : <BlockServiceButton
-      adminUser={props.adminUser}
-      icon={props.icon}
-      service={props.service}
-      canonicalService={props.canonicalService}
-      onClick={() => props.onClick()}
-      onUnauthorized={props.onUnauthorized}
-    />;
+export default props => <AsyncRadioButton
+  onClick={() => fetch(`/api/services/${props.blocked ? 'un' : ''}block?service=${encodeURIComponent(props.service)}`)
+    .then(res => res.status === 401 ? props.onUnauthorized() : null)}
+  defaultChecked={!props.blocked}
+  label={props.blocked ? 'Off' : 'On'}
+/>;

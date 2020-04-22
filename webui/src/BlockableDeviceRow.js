@@ -29,7 +29,7 @@ class BlockableDeviceRow extends Component {
               canonicalName={this.props.canonicalDevice}
               onlineStatus={this.state.onlineStatus} />
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column textAlign='left'>
             <BlockableDeviceButton
               adminUser={this.props.adminUser}
               device={this.props.device}
