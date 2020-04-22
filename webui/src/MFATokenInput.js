@@ -78,6 +78,11 @@ class MFATokenInput extends Component {
                       Verify
                     </AsyncButton>
                   </Segment>
+                  <Segment>
+                    <Button fluid size='large' onClick={() => this.props.onCancel()}>
+                      Cancel
+                    </Button>
+                  </Segment>
                 </Segment.Group>
               </Form>
             </Card.Description>
