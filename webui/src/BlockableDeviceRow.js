@@ -31,6 +31,7 @@ class BlockableDeviceRow extends Component {
           </Grid.Column>
           <Grid.Column>
             <BlockableDeviceButton
+              adminUser={this.props.adminUser}
               device={this.props.device}
               blocked={this.props.blocked}
               onUnauthorized={this.props.onUnauthorized}

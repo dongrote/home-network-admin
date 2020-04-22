@@ -6,6 +6,7 @@ export default props => (
   <LabeledButtonGroup color='yellow' label='Power'>
     {props.devices.map((dev, i) => <WakeOnLanDeviceRow
       key={i}
+      adminUser={props.adminUser}
       hwaddress={dev.hwaddress}
       device={dev.hostname}
       canonicalDevice={dev.name}

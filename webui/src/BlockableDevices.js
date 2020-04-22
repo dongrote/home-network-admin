@@ -6,6 +6,7 @@ export default props => (
   <LabeledButtonGroup color='purple' label='Devices'>
     {props.devices.map((dev, i) => <BlockableDeviceRow
       key={i}
+      adminUser={props.adminUser}
       icon={dev.icon}
       device={dev.name}
       canonicalDevice={dev.canonicalName}

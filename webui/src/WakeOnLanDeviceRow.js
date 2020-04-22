@@ -31,6 +31,7 @@ class BlockableDeviceRow extends Component {
           </Grid.Column>
           <Grid.Column>
             <WakeUpButton
+              adminUser={this.props.adminUser}
               mac={this.props.hwaddress}
               onUnauthorized={this.props.onUnauthorized}
             />
