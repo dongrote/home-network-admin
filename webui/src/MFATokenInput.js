@@ -1,5 +1,6 @@
 import React, {Component, createRef } from 'react';
 import {Card, Grid, Form, Input, Button, Segment} from 'semantic-ui-react';
+import AsyncButton from './AsyncButton';
 
 class MFATokenInput extends Component {
   inputRef = createRef();
@@ -67,7 +68,15 @@ class MFATokenInput extends Component {
                     />
                   </Segment>
                   <Segment>
-                    <Button fluid primary size='large' submit onClick={() => this.onSubmitClick()}>Authenticate</Button>
+                    <AsyncButton
+                      fluid
+                      submit
+                      primary
+                      size='large'
+                      onClick={() => this.onSubmitClick()}
+                    >
+                      Verify
+                    </AsyncButton>
                   </Segment>
                 </Segment.Group>
               </Form>

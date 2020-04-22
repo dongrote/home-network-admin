@@ -21,7 +21,10 @@ class AsyncButton extends Component {
   render() {
     return (
       <Button
+        fluid={this.props.fluid}
         icon={this.props.icon}
+        primary={this.props.primary}
+        submit={this.props.submit}
         color={this.props.color}
         negative={this.props.negative}
         positive={this.props.positive}
