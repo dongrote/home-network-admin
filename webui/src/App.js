@@ -46,7 +46,6 @@ class App extends Component {
 
   updateLoggedIn() {
     this.decodeJwtCookie();
-    console.log('jwt', this.token);
     this.setState({loggedIn: this.token && this.token.role === 'admin'});
   }
 
