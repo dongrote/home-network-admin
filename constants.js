@@ -10,5 +10,5 @@ exports = module.exports = {
   YouTubeContentDomainRegex: '(^|\\.)googlevideo\\.com$',
   TwitchDomain: 'twitch.tv',
   TwitchDomainRegex: '(^|\\.)twitch\\.tv$',
-  jwtIssuer: 'siri-shortcut-server',
+  jwtIssuer: 'home-network-admin',
 };
