@@ -1,10 +1,7 @@
 'use strict';
 const _ = require('lodash'),
   moment = require('moment'),
-  core = require('../core'),
-  constants = require('../constants'),
-  
-  jsonwebtoken = require('jsonwebtoken');
+  core = require('../core');
 
 exports = module.exports = key => (req, res, next) => _.has(req.cookies, 'jwt')
   ? next()
