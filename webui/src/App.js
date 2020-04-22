@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
+import jwt from 'jsonwebtoken';
 import {Container, Grid, Segment} from 'semantic-ui-react';
 import BlockableDevices from './BlockableDevices';
 import WakeOnLanDevices from './WakeOnLanDevices';
@@ -15,6 +16,7 @@ class App extends Component {
     services: [],
     wol: [],
   };
+  token = null;
 
   async fetchDevices() {
     var res = await fetch('/api/devices/state');
@@ -34,8 +36,17 @@ class App extends Component {
     this.setState({wol: json.state});
   }
 
+  decodeJwtCookie() {
+    document.cookie.split(';').forEach(c => {
+      if (c.startsWith('jwt=')) {
+        this.token = jwt.decode(c.slice(4));
+      }
+    });
+  }
+
   updateLoggedIn() {
-    this.setState({loggedIn: document.cookie.split(';').some(item => item.startsWith('jwt='))});
+    this.decodeJwtCookie();
+    this.setState({loggedIn: this.token && this.token.role === 'admin'});
   }
 
   async updateState() {
