@@ -75,7 +75,10 @@ class App extends Component {
         <Container text>
           <Grid centered verticalAlign='middle'>
             <Grid.Row>
-              <MFATokenInput onSubmit={() => window.location.reload()}/>
+              <MFATokenInput
+                onCancel={() => this.setState({verifying: false})}
+                onSubmit={() => window.location.reload()}
+              />
             </Grid.Row>
           </Grid>
         </Container>
