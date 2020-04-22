@@ -4,6 +4,7 @@ import UnblockServiceButton from './UnblockServiceButton';
 
 export default props => props.blocked
   ? <UnblockServiceButton
+      adminUser={props.adminUser}
       icon={props.icon}
       service={props.service}
       canonicalService={props.canonicalService}
@@ -11,6 +12,7 @@ export default props => props.blocked
       onUnauthorized={props.onUnauthorized}
     />
   : <BlockServiceButton
+      adminUser={props.adminUser}
       icon={props.icon}
       service={props.service}
       canonicalService={props.canonicalService}

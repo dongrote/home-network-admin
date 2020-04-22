@@ -7,6 +7,7 @@ export default props => (
     {props.services.map((service, i) => 
       <BlockableServiceRow
         key={i}
+        adminUser={props.adminUser}
         color={service.color}
         icon={service.icon}
         canonicalService={service.canonicalName}

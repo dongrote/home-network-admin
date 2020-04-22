@@ -13,6 +13,7 @@ export default props => (
       </Grid.Column>
       <Grid.Column>
         <BlockableServiceButton
+          adminUser={props.adminUser}
           service={props.service}
           blocked={props.blocked}
           onUnauthorized={props.onUnauthorized}

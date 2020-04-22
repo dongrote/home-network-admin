@@ -11,10 +11,11 @@ const socket = io();
 
 class App extends Component {
   state = {
-    loggedIn: false,
+    admin: false,
     devices: [],
     services: [],
     wol: [],
+    verifying: false,
   };
   token = null;
 
@@ -40,23 +41,24 @@ class App extends Component {
     document.cookie.split(';').forEach(c => {
       if (c.startsWith('jwt=')) {
         this.token = jwt.decode(c.slice(4));
+        console.log(this.token);
       }
     });
   }
 
-  updateLoggedIn() {
+  updateAdmin() {
     this.decodeJwtCookie();
-    this.setState({loggedIn: this.token && this.token.role === 'admin'});
+    this.setState({admin: this.token && this.token.role === 'admin'});
   }
 
   async updateState() {
-    this.updateLoggedIn();
+    this.updateAdmin();
     await [this.fetchDevices(), this.fetchServices(), this.fetchWakeOnLan()];
   }
 
   componentDidMount() {
     socket
-      .on('ping', () => this.updateLoggedIn())
+      .on('ping', () => this.updateAdmin())
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}))
       .on('wol', wol => this.setState({wol}));
@@ -64,30 +66,12 @@ class App extends Component {
   }
 
   onUnauthorized() {
-    window.location.reload();
+    this.setState({verifying: true});
   }
 
   render() {
-    return this.state.loggedIn
+    return this.state.verifying
       ? (
-        <Container text>
-          <Segment.Group>
-            <WakeOnLanDevices
-              devices={this.state.wol}
-              onUnauthorized={() => this.onUnauthorized()}
-            />
-            <BlockableDevices
-              devices={this.state.devices}
-              onUnauthorized={() => this.onUnauthorized()}
-            />
-            <BlockableServices
-              services={this.state.services}
-              onUnauthorized={() => this.onUnauthorized()}
-            />
-          </Segment.Group>
-        </Container>
-        )
-      :(
         <Container text>
           <Grid centered verticalAlign='middle'>
             <Grid.Row>
@@ -95,7 +79,28 @@ class App extends Component {
             </Grid.Row>
           </Grid>
         </Container>
-      );
+      )
+      : (
+        <Container text>
+          <Segment.Group>
+            <WakeOnLanDevices
+              adminUser={this.state.admin}
+              devices={this.state.wol}
+              onUnauthorized={() => this.onUnauthorized()}
+            />
+            <BlockableDevices
+              adminUser={this.state.admin}
+              devices={this.state.devices}
+              onUnauthorized={() => this.onUnauthorized()}
+            />
+            <BlockableServices
+              adminUser={this.state.admin}
+              services={this.state.services}
+              onUnauthorized={() => this.onUnauthorized()}
+            />
+          </Segment.Group>
+        </Container>
+        );
   }
 }
 
