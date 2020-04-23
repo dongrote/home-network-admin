@@ -1,15 +1,9 @@
 import React from 'react';
-import BlockDeviceButton from './BlockDeviceButton';
-import UnblockDeviceButton from './UnblockDeviceButton';
+import AsyncRadioButton from './AsyncRadioButton';
 
-export default props => props.blocked
-  ? <UnblockDeviceButton
-      adminUser={props.adminUser}
-      device={props.device}
-      onUnauthorized={props.onUnauthorized}
-    />
-  : <BlockDeviceButton
-      adminUser={props.adminUser}
-      device={props.device}
-      onUnauthorized={props.onUnauthorized}
-    />;
+export default props => <AsyncRadioButton
+  onClick={() => fetch(`/api/iptables/block/${props.device}`, {method: props.blocked ? 'DELETE' : 'POST'})
+    .then(res => res.status === 401 ? props.onUnauthorized() : null)}
+  checked={!props.blocked}
+  label={props.blocked ? 'Off' : 'On'}
+/>;

@@ -11,7 +11,7 @@ export default props => (
           {props.canonicalService}
         </Label>
       </Grid.Column>
-      <Grid.Column>
+      <Grid.Column textAlign='left'>
         <BlockableServiceButton
           adminUser={props.adminUser}
           service={props.service}
