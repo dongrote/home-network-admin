@@ -4,6 +4,6 @@ const _ = require('lodash'),
   log = require('debug-logger')('core:Websockets:clientConnect');
 
 exports = module.exports = client => {
-  log.debug(`client ${client.id} connected`);
+  log.info(`client ${client.id} connected`);
   _.set(clients, client.id, client);
 };

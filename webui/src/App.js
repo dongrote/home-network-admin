@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
-import jwt from 'jsonwebtoken';
 import {Container, Grid, Segment} from 'semantic-ui-react';
 import BlockableDevices from './BlockableDevices';
 import WakeOnLanDevices from './WakeOnLanDevices';
@@ -17,7 +16,6 @@ class App extends Component {
     wol: [],
     verifying: false,
   };
-  token = null;
 
   async fetchDevices() {
     var res = await fetch('/api/devices/state');
@@ -37,27 +35,13 @@ class App extends Component {
     this.setState({wol: json.state});
   }
 
-  decodeJwtCookie() {
-    document.cookie.split(';').forEach(c => {
-      if (c.startsWith('jwt=')) {
-        this.token = jwt.decode(c.slice(4));
-        console.log(this.token);
-      }
-    });
-  }
-
-  updateAdmin() {
-    this.decodeJwtCookie();
-    this.setState({admin: this.token && this.token.role === 'admin'});
-  }
-
   async updateState() {
-    this.updateAdmin();
     await [this.fetchDevices(), this.fetchServices(), this.fetchWakeOnLan()];
   }
 
   componentDidMount() {
     socket
+      .on('connect', () => this.updateState())
       .on('ping', () => this.updateAdmin())
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}))
@@ -87,17 +71,14 @@ class App extends Component {
         <Container text>
           <Segment.Group>
             <WakeOnLanDevices
-              adminUser={this.state.admin}
               devices={this.state.wol}
               onUnauthorized={() => this.onUnauthorized()}
             />
             <BlockableDevices
-              adminUser={this.state.admin}
               devices={this.state.devices}
               onUnauthorized={() => this.onUnauthorized()}
             />
             <BlockableServices
-              adminUser={this.state.admin}
               services={this.state.services}
               onUnauthorized={() => this.onUnauthorized()}
             />
