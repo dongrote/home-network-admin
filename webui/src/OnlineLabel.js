@@ -1,5 +1,5 @@
 import React from 'react';
-import {Label, Icon} from 'semantic-ui-react';
+import {Button, Icon} from 'semantic-ui-react';
 
 const colors = {
   online: 'green',
@@ -14,9 +14,8 @@ const content = {
 };
 
 export default props => (
-  <Label onClick={() => props.onClick ? props.onClick() : null}>
+  <Button fluid onClick={() => props.onClick ? props.onClick() : null}>
     <Icon name='power' color={colors[props.onlineStatus]} />
-    {props.canonicalName}
-    <Label.Detail>{content[props.onlineStatus]}</Label.Detail>
-  </Label>
+    {props.canonicalName} {content[props.onlineStatus]}
+  </Button>
 );

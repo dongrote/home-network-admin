@@ -1,15 +1,15 @@
 import React from 'react';
-import {Grid, Label, Icon} from 'semantic-ui-react';
+import {Grid, Button, Icon} from 'semantic-ui-react';
 import BlockableServiceButton from './BlockableServiceButton';
 
 export default props => (
   <Grid>
     <Grid.Row columns={2}>
       <Grid.Column>
-        <Label color={props.color}>
+        <Button fluid size='large' color={props.color}>
           <Icon name={props.icon} />
           {props.canonicalService}
-        </Label>
+        </Button>
       </Grid.Column>
       <Grid.Column textAlign='left'>
         <BlockableServiceButton
