@@ -2,26 +2,21 @@ import React, { Component } from 'react';
 import {Radio} from 'semantic-ui-react';
 
 class AsyncRadioButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      disabled: props.disabled || false,
-    };
-  }
+  state = {loading: false};
 
   click() {
-    this.setState({loading: true, disabled: true});
+    this.setState({loading: true});
     this.props.onClick()
-      .then(() => this.setState({loading: false, disabled: false}));
+      .then(() => this.setState({loading: false}));
   }
 
   render() {
     return <Radio
       toggle
       onClick={() => this.click()}
+      indeterminate={this.state.loading}
       label={this.state.loading ? 'Working ...' : this.props.label}
-      defaultChecked={this.props.defaultChecked}
+      checked={this.props.checked}
     />;
   }
 }
