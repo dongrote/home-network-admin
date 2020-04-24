@@ -42,7 +42,6 @@ class App extends Component {
   componentDidMount() {
     socket
       .on('connect', () => this.updateState())
-      .on('ping', () => this.updateAdmin())
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}))
       .on('wol', wol => this.setState({wol}));

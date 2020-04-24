@@ -1,6 +1,7 @@
 import React from 'react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import BlockableDeviceRow from './BlockableDeviceRow';
+import AddNetworkDeviceForm from './AddNetworkDeviceForm';
 import { Grid, Header } from 'semantic-ui-react';
 
 export default props => (
@@ -13,6 +14,7 @@ export default props => (
       blocked={dev.blocked}
       onUnauthorized={props.onUnauthorized}
     />)}
+    <AddNetworkDeviceForm />
     {props.devices.length === 0 && (
       <Grid>
         <Grid.Row columns={1}>
