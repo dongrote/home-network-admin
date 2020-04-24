@@ -1,4 +1,5 @@
 import React from 'react';
+import {Grid, Header} from 'semantic-ui-react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import BlockableServiceRow from './BlockableServiceRow';
 import AddNetworkServiceForm from './AddNetworkServiceForm';
@@ -18,5 +19,15 @@ export default props => (
       />
     )}
     <AddNetworkServiceForm />
+    {props.services.length === 0 && (
+      <Grid>
+        <Grid.Row columns={1}>
+          <Grid.Column>
+            <Header>No Services</Header>
+            Populate <tt>/var/run/home-network-admin/network-services.yaml</tt>.
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    )}
   </LabeledButtonGroup>
 );
