@@ -1,6 +1,7 @@
 import React from 'react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import WakeOnLanDeviceRow from './WakeOnLanDeviceRow';
+import AddWakeupDeviceForm from './AddWakeupDeviceForm';
 
 export default props => (
   <LabeledButtonGroup color='yellow' label='Power'>
@@ -11,5 +12,6 @@ export default props => (
       canonicalDevice={dev.name}
       onUnauthorized={props.onUnauthorized}
     />)}
+    <AddWakeupDeviceForm />
   </LabeledButtonGroup>
 );

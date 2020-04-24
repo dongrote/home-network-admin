@@ -1,6 +1,7 @@
 import React from 'react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import BlockableServiceRow from './BlockableServiceRow';
+import AddNetworkServiceForm from './AddNetworkServiceForm';
 
 export default props => (
   <LabeledButtonGroup color='olive' label='Services'>
@@ -16,5 +17,6 @@ export default props => (
         onClick={props.onMutate}
       />
     )}
+    <AddNetworkServiceForm />
   </LabeledButtonGroup>
 );

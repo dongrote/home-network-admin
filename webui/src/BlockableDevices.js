@@ -1,6 +1,7 @@
 import React from 'react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import BlockableDeviceRow from './BlockableDeviceRow';
+import AddNetworkDeviceForm from './AddNetworkDeviceForm';
 
 export default props => (
   <LabeledButtonGroup color='purple' label='Devices'>
@@ -12,5 +13,6 @@ export default props => (
       blocked={dev.blocked}
       onUnauthorized={props.onUnauthorized}
     />)}
+    <AddNetworkDeviceForm />
   </LabeledButtonGroup>
 );
