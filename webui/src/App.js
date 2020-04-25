@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
-import {Container, Grid, Segment} from 'semantic-ui-react';
+import {Container, Grid, Segment, Button} from 'semantic-ui-react';
 import BlockableDevices from './BlockableDevices';
 import WakeOnLanDevices from './WakeOnLanDevices';
 import MFATokenInput from './MFATokenInput';
 import BlockableServices from './BlockableServices';
+import jwt from 'jsonwebtoken';
 
 const socket = io();
 
@@ -16,6 +17,7 @@ class App extends Component {
     wol: [],
     verifying: false,
   };
+  role = 'guest';
 
   async fetchDevices() {
     var res = await fetch('/api/devices/state');
@@ -35,12 +37,24 @@ class App extends Component {
     this.setState({wol: json.state});
   }
 
+  updateRole() {
+    var signedTokenCookie = document.cookie.split(';').find(s => s.startsWith('jwt='));
+    var role = 'guest';
+    if (signedTokenCookie) {
+      var signedToken = signedTokenCookie.slice(4);
+      role = jwt.decode(signedToken).role;
+    }
+    this.setState({role});
+  }
+
   async updateState() {
+    this.updateRole();
     await [this.fetchDevices(), this.fetchServices(), this.fetchWakeOnLan()];
   }
 
   componentDidMount() {
     socket
+      .on('ping', () => this.updateRole())
       .on('connect', () => this.updateState())
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}))
@@ -49,6 +63,7 @@ class App extends Component {
   }
 
   onUnauthorized() {
+    this.updateRole();
     this.setState({verifying: true});
   }
 
@@ -69,15 +84,23 @@ class App extends Component {
       : (
         <Container text>
           <Segment.Group>
+            <Segment textAlign='center'>
+              {this.state.role === 'admin'
+                ? <Button fluid positive content='Authenticated' icon='lock' labelPosition='left' />
+                : <Button fluid negative content='Authenticate' icon='unlock' labelPosition='left' onClick={() => this.setState({verifying: true})} />}
+            </Segment>
             <WakeOnLanDevices
+              role={this.state.role}
               devices={this.state.wol}
               onUnauthorized={() => this.onUnauthorized()}
             />
             <BlockableDevices
+              role={this.state.role}
               devices={this.state.devices}
               onUnauthorized={() => this.onUnauthorized()}
             />
             <BlockableServices
+              role={this.state.role}
               services={this.state.services}
               onUnauthorized={() => this.onUnauthorized()}
             />

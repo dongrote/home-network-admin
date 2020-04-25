@@ -18,8 +18,8 @@ export default props => (
         onClick={props.onMutate}
       />
     )}
-    <AddNetworkServiceForm />
-    {props.services.length === 0 && (
+    {props.role === 'admin' ? <AddNetworkServiceForm /> : null}
+    {props.services.length === 0 ? (
       <Grid>
         <Grid.Row columns={1}>
           <Grid.Column>
@@ -28,6 +28,6 @@ export default props => (
           </Grid.Column>
         </Grid.Row>
       </Grid>
-    )}
+    ) : null}
   </LabeledButtonGroup>
 );

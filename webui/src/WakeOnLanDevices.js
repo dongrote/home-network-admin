@@ -13,8 +13,8 @@ export default props => (
       canonicalDevice={dev.name}
       onUnauthorized={props.onUnauthorized}
     />)}
-    <AddWakeupDeviceForm />
-    {props.devices.length === 0 && (
+    {props.role === 'admin' ? <AddWakeupDeviceForm /> : null}
+    {props.devices.length === 0 ? (
       <Grid>
         <Grid.Row columns={1}>
           <Grid.Column>
@@ -23,6 +23,6 @@ export default props => (
           </Grid.Column>
         </Grid.Row>
       </Grid>
-    )}
+    ) : null}
   </LabeledButtonGroup>
 );
