@@ -14,8 +14,8 @@ export default props => (
       blocked={dev.blocked}
       onUnauthorized={props.onUnauthorized}
     />)}
-    <AddNetworkDeviceForm />
-    {props.devices.length === 0 && (
+    {props.role === 'admin' ? <AddNetworkDeviceForm /> : null}
+    {props.devices.length === 0 ? (
       <Grid>
         <Grid.Row columns={1}>
           <Grid.Column>
@@ -24,6 +24,6 @@ export default props => (
           </Grid.Column>
         </Grid.Row>
       </Grid>
-    )}
+    ) : null}
   </LabeledButtonGroup>
 );
