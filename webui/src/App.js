@@ -16,8 +16,8 @@ class App extends Component {
     services: [],
     wol: [],
     verifying: false,
+    role: 'guest',
   };
-  role = 'guest';
 
   async fetchDevices() {
     var res = await fetch('/api/devices/state');
