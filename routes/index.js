@@ -1,7 +1,7 @@
 'use strict';
-const router = require('express').Router(),
-  env = require('../env'),
-  iptables = require('./iptables'),
+const router = require('express').Router();
+exports = module.exports = router;
+const iptables = require('./iptables'),
   wol = require('./wol'),
   auth = require('./auth'),
   services = require('./services'),
@@ -10,16 +10,14 @@ const router = require('express').Router(),
   serviceState = require('./services/state'),
   deviceState = require('./devices/state'),
   onlineState = require('./devices/online'),
-  jwtVerify = require('../middleware/jwtVerify')(env.jwtKey());
+  enforceAdmin = require('../middleware/jwtVerify')('admin');
 
 router.use('/auth', auth);
-router.use('/iptables', jwtVerify, iptables);
+router.use('/iptables', enforceAdmin, iptables);
 router.get('/wol/state', wolState);
-router.use('/wol', jwtVerify, wol);
+router.use('/wol', enforceAdmin, wol);
 router.get('/services/state', serviceState);
-router.use('/services', jwtVerify, services);
+router.use('/services', enforceAdmin, services);
 router.get('/devices/state', deviceState);
 router.get('/devices/online', onlineState);
 router.use('/system', system);
-
-exports = module.exports = router;

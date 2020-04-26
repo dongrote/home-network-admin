@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
-import {Container, Grid, Segment, Button} from 'semantic-ui-react';
+import {Container, Grid, Segment, Button, Image} from 'semantic-ui-react';
 import BlockableDevices from './BlockableDevices';
 import WakeOnLanDevices from './WakeOnLanDevices';
 import MFATokenInput from './MFATokenInput';
@@ -104,6 +104,9 @@ class App extends Component {
               services={this.state.services}
               onUnauthorized={() => this.onUnauthorized()}
             />
+            {this.state.role === 'admin'
+              ? <Image bordered centered src='/api/auth/qrcode' />
+              : null}
           </Segment.Group>
         </Container>
         );
