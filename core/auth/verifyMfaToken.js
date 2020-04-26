@@ -1,5 +1,6 @@
 'use strict';
-const notp = require('notp'),
+const env = require('../../env'),
+  notp = require('notp'),
   createJwt = require('./createJwt'),
   moment = require('moment');
 
@@ -9,6 +10,6 @@ exports = module.exports = (mfaKey, token, jwtKey) => new Promise((resolve, reje
     return resolve({verified: false});
   }
   createJwt('admin', jwtKey)
-    .then(signed => resolve({verified: true, jwt: {signed, expiration: moment().add(3, 'm').toDate()}}))
+    .then(signed => resolve({verified: true, jwt: {signed, expiration: moment().add(env.tokenExpirationValue(), env.tokenExpirationUnit()).toDate()}}))
     .catch(reject);
 });

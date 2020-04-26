@@ -1,11 +1,13 @@
 'use strict';
-const jsonwebtoken = require('jsonwebtoken'),
-  constants = require('../../constants');
+const env = require('../../env'),
+  privateKey = require('./privateKey'),
+  jsonwebtoken = require('jsonwebtoken');
 
-exports = module.exports = (role, key) => new Promise((resolve, reject) => {
-  jsonwebtoken.sign({role}, key, {
-    algorithm: 'HS256',
-    issuer: constants.jwtIssuer,
-    expiresIn: '3m',
-  }, (err, signed) => err ? reject(err) : resolve(signed));
-});
+exports = module.exports = role => privateKey()
+  .then(signKey => new Promise((resolve, reject) => {
+    jsonwebtoken.sign({role}, signKey, {
+      algorithm: env.jwtAlgorithm(),
+      issuer: env.jwtIssuer(),
+      expiresIn: env.jwtExpiresIn(),
+    }, (err, signed) => err ? reject(err) : resolve(signed));
+  }));

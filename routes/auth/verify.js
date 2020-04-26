@@ -1,7 +1,7 @@
 'use strict';
 const _ = require('lodash'),
-  env = require('../env'),
-  core = require('../core');
+  env = require('../../env'),
+  core = require('../../core');
 
 exports = module.exports = (req, res, next) => {
   const token = _.get(req.query, 'token', '');

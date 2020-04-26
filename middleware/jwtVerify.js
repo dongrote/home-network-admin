@@ -1,15 +1,18 @@
 'use strict';
 const _ = require('lodash'),
-  constants = require('../constants'),
-  jsonwebtoken = require('jsonwebtoken'),
+  core = require('../core'),
   HttpError = require('http-error-constructor');
 
-exports = module.exports = key => (req, res, next) => {
-  const signed = _.get(req.cookies, 'jwt', '');
-  jsonwebtoken.verify(signed, key, {algorithms: ['HS256'], issuer: constants.jwtIssuer}, (err, decoded) => {
-    if (err) return next(new HttpError(401, err.message));
-    if (decoded.role !== 'admin') return next(new HttpError(401, 'required role: admin'));
-    req.jwt = decoded;
-    next();
-  });
+exports = module.exports = roles => (req, res, next) => {
+  const signed = _.get(req.cookies, 'jwt', ''),
+    rolespec = Array.isArray(roles) ? roles : [roles];
+  return core.auth.verifyJwt(signed)
+    .then(decoded => {
+      req.jwt = decoded;
+      if (!_.includes(rolespec, decoded.role)) {
+        throw new Error(`required role(s): ${rolespec.join(', ')}`);
+      }
+      next();
+    })
+    .catch(err => next(new HttpError(401, err.message)));
 };
