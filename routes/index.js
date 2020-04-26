@@ -12,7 +12,7 @@ const router = require('express').Router(),
   onlineState = require('./devices/online'),
   jwtVerify = require('../middleware/jwtVerify')(env.jwtKey());
 
-router.get('/auth', auth);
+router.use('/auth', auth);
 router.use('/iptables', jwtVerify, iptables);
 router.get('/wol/state', wolState);
 router.use('/wol', jwtVerify, wol);
