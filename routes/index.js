@@ -10,8 +10,8 @@ const iptables = require('./iptables'),
   serviceState = require('./services/state'),
   deviceState = require('./devices/state'),
   onlineState = require('./devices/online'),
+  createDevice = require('./devices/create'),
   enforceAdmin = require('../middleware/jwtVerify')('admin');
-  createDevice = require('./devices/create');
 
 router.use('/auth', auth);
 router.use('/iptables', enforceAdmin, iptables);
