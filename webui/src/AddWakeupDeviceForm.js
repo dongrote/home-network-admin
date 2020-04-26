@@ -10,16 +10,18 @@ class AddWakeupDeviceForm extends Component {
     maySubmit: false,
   };
 
-  onNameInput() {
-
+  onNameInput(value) {
+    this.setState({
+      name: input,
+      maySubmit: this.state.hostname.length > 0 && input.length > 0,
+    });
   }
 
-  onIconSelect() {
-
-  }
-
-  onHostnameInput() {
-
+  onHardwareAddressInput() {
+    this.setState({
+      hostname: input.toLowerCase(),
+      maySubmit: this.state.name.length > 0 && input.length > 0,
+    });
   }
 
   onSubmit() {
@@ -41,8 +43,8 @@ class AddWakeupDeviceForm extends Component {
           <Grid.Column>
             <Form>
               <Form.Field>
-                <label>Hostname</label>
-                <input placeholder='hostname.lan' />
+                <label>Hardware Address</label>
+                <input placeholder='00:11:22:33:44:55' />
               </Form.Field>
             </Form>
           </Grid.Column>
