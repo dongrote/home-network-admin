@@ -3,6 +3,7 @@ import {Button, Input, Dropdown, Grid, Form} from 'semantic-ui-react';
 
 class AddNetworkServiceForm extends Component {
   state = {
+    notReadyYet: true,
     creating: false,
     name: null,
     icon: null,
@@ -56,7 +57,7 @@ class AddNetworkServiceForm extends Component {
           </Grid.Row>
         </Grid>
       )
-      : (<Button onClick={() => this.setState({creating: true})}>Add new service</Button>);
+      : (<Button disabled={this.state.notReadyYet} onClick={() => this.setState({creating: true})}>Add new service</Button>);
   }
 }
 
