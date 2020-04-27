@@ -38,11 +38,15 @@ class MFATokenInput extends Component {
 
   async onSubmitClick() {
     var res = await fetch(`/api/auth?token=${this.state.token}`);
-    if (res.status === 401) {
-      this.setState({error: true, errorMessage: 'Invalid Token', token: ''});
-      this.inputRef.current.focus();
-    } else {
+    if (res.ok) {
       this.props.onSubmit();
+    } else {
+      this.setState({
+        error: true,
+        errorMessage: res.status === 401 ? 'Invalid Token' : res.statusText,
+        token: '',
+      });
+      this.inputRef.current.focus();
     }
   }
 
