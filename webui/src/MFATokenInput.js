@@ -1,10 +1,10 @@
 import React, {Component, createRef } from 'react';
-import {Card, Grid, Form, Input, Button, Segment} from 'semantic-ui-react';
+import {Card, Grid, Form, Input, Button, Segment, Label} from 'semantic-ui-react';
 import AsyncButton from './AsyncButton';
 
 class MFATokenInput extends Component {
   inputRef = createRef();
-  state = {token: ''};
+  state = {token: '', error: false};
 
   updateTokenInput(keyCode) {
     let token;
@@ -21,7 +21,7 @@ class MFATokenInput extends Component {
       return;
     }
     if (token.length > 6) token = token.slice(0, 6);
-    this.setState({token});
+    this.setState({token, error: false});
   }
 
   onTokenPaste(event) {
@@ -32,13 +32,18 @@ class MFATokenInput extends Component {
         pasteToken += c;
       }
     });
-    this.setState({token: `${this.state.token}${pasteToken}`.slice(0, 6)});
+    const finalToken = `${this.state.token}${pasteToken}`.slice(0, 6);
+    this.setState({token: finalToken, error: false});
   }
 
-  onSubmitClick() {
-    fetch(`/api/auth?token=${this.state.token}`)
-      .then(() => this.props.onSubmit())
-      .catch(() => this.props.onSubmit());
+  async onSubmitClick() {
+    var res = await fetch(`/api/auth?token=${this.state.token}`);
+    if (res.status === 401) {
+      this.setState({error: true, errorMessage: 'Invalid Token', token: ''});
+      this.inputRef.current.focus();
+    } else {
+      this.props.onSubmit();
+    }
   }
 
   componentDidMount() {
@@ -58,6 +63,8 @@ class MFATokenInput extends Component {
                   <Segment>
                     <Input
                       fluid
+                      focus
+                      error={this.state.error}
                       ref={this.inputRef}
                       type='tel'
                       placeholder='- - -  - - -'
@@ -66,6 +73,7 @@ class MFATokenInput extends Component {
                       onPaste={event => this.onTokenPaste(event)}
                       icon={{name: 'key', circular: true}}
                     />
+                    {this.state.error && <Label basic color='red' pointing>{this.state.errorMessage}</Label>}
                   </Segment>
                   <Segment>
                     <AsyncButton
