@@ -60,7 +60,7 @@ class AddWakeupDeviceForm extends Component {
       return this.props.onUnauthorized();
     }
     console.log('created wol device');
-    this.setState({creating: false});
+    this.setState({creating: false, hwaddr: '', name: '', hostname: '', maySubmit: false});
   }
 
   render() {
