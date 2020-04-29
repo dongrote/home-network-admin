@@ -9,33 +9,40 @@ class AddWakeupDeviceForm extends Component {
     hostname: '',
     maySubmit: false,
   };
+  hostnameTimeout = null;
+
+  async updateEthernetAddress() {
+    if (this.state.hostname.length === 0) {
+      this.setState({hwaddr: '', maySubmit: false});
+      return;
+    };
+    var res = await fetch(`/api/devices/ethernet?hostname=${encodeURIComponent(this.state.hostname)}`);
+    if (res.ok) {
+      var json = await res.json();
+      this.setState({
+        hwaddr: json.ethernet,
+        maySubmit: this.state.hostname.length > 0 && this.state.name.length > 0,
+      });
+    } else {
+      this.setState({hwaddr: '', maySubmit: false});
+    }
+  }
+
+  onHostnameInput(value) {
+    clearTimeout(this.hostnameTimeout);
+    this.hostnameTimeout = null;
+    const adjustedHostname = value.replace(/ /g, '').toLowerCase();
+    this.setState({
+      hostname: adjustedHostname,
+      maySubmit: this.state.hwaddr.length > 0 && adjustedHostname.length > 0 && this.state.name.length > 0,
+    });
+    this.hostnameTimeout = setTimeout(() => this.updateEthernetAddress(), 1000);
+  }
 
   onNameInput(value) {
     this.setState({
       name: value,
-      maySubmit: this.state.hwaddr.length > 0 && value.length > 0 && this.state.hostname.length > 0,
-    });
-  }
-
-  onHardwareAddressInput(value) {
-    const lowercase = value.toLowerCase();
-    let stripped = '';
-    for (var i = 0; i < lowercase.length; i++) {
-      const c = lowercase[i];
-      if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c === ':')) {
-        stripped += c;
-      }
-    }
-    this.setState({
-      hwaddr: stripped.slice(0, 17),
-      maySubmit: this.state.name.length > 0 && this.state.hostname.length > 0 && stripped.length > 0,
-    });
-  }
-
-  onHostnameInput(input) {
-    this.setState({
-      hostname: input.toLowerCase(),
-      maySubmit: this.state.name.length > 0 && this.state.hwaddr.length > 0 && input.length > 0,
+      maySubmit: value.length > 0 && this.state.hwaddr.length > 0 && this.state.hostname.length > 0,
     });
   }
 
@@ -59,29 +66,33 @@ class AddWakeupDeviceForm extends Component {
   render() {
     return this.state.creating
       ? (
-        <Grid columns='equal'>
-          <Grid.Column>
-            <Form>
-              <Form.Field>
-                <label>Name</label>
-                <input placeholder='Name' value={this.state.name} onInput={e => this.onNameInput(e.target.value)} />
-              </Form.Field>
-            </Form>
-          </Grid.Column>
-          <Grid.Column>
-            <Form>
-              <Form.Field>
-                <label>Hardware Address</label>
-                <input placeholder='00:11:22:33:44:55' value={this.state.hwaddr} onInput={e => this.onHardwareAddressInput(e.target.value)} />
-              </Form.Field>
-            </Form>
-          </Grid.Column>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column>
+              <Form>
+                <Form.Field>
+                  <label>Name</label>
+                  <input placeholder='Name' value={this.state.name} onInput={e => this.onNameInput(e.target.value)} />
+                </Form.Field>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Row>
             <Grid.Column>
               <Form>
                 <Form.Field>
                   <label>Hostname</label>
                   <input placeholder='hostname.lan' value={this.state.hostname} onInput={e => this.onHostnameInput(e.target.value)} />
+                </Form.Field>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <Form>
+                <Form.Field>
+                  <label>Hardware Address</label>
+                  <input placeholder='00:11:22:33:44:55' value={this.state.hwaddr} />
                 </Form.Field>
               </Form>
             </Grid.Column>
