@@ -1,6 +1,7 @@
 'use strict';
-const core = require('../../core');
+const _ = require('lodash'),
+  core = require('../../core');
 
-exports = module.exports = (req, res, next) => core.devices.unblock(req.params.device)
+exports = module.exports = (req, res, next) => core.devices.unblock(_.get(req, 'token', ''), req.params.device)
   .then(() => res.sendStatus(200))
   .catch(next);

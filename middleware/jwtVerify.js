@@ -9,6 +9,7 @@ exports = module.exports = roles => (req, res, next) => {
   return core.auth.verifyJwt(signed)
     .then(decoded => {
       req.jwt = decoded;
+      req.token = signed;
       if (!_.includes(rolespec, decoded.role)) {
         throw new Error(`required role(s): ${rolespec.join(', ')}`);
       }
