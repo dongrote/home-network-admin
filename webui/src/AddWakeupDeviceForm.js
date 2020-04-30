@@ -65,7 +65,7 @@ class AddWakeupDeviceForm extends Component {
   render() {
     return this.state.creating
       ? (
-        <Grid>
+        <Grid textAlign='left'>
           <Grid.Row>
             <Grid.Column>
               <Form>
