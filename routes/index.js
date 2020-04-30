@@ -11,15 +11,19 @@ const iptables = require('./iptables'),
   deviceState = require('./devices/state'),
   onlineState = require('./devices/online'),
   createDevice = require('./devices/create'),
+  createService = require('./services/create'),
   deviceEthernet = require('./devices/ethernet'),
+  validateService = require('./services/validate'),
   enforceAdmin = require('../middleware/jwtVerify')('admin');
 
 router.use('/auth', auth);
 router.use('/iptables', enforceAdmin, iptables);
 router.get('/wol/state', wolState);
 router.use('/wol', enforceAdmin, wol);
+router.get('/services/validate', validateService);
 router.get('/services/state', serviceState);
 router.use('/services', enforceAdmin, services);
+router.post('/services', enforceAdmin, createService);
 router.post('/devices', enforceAdmin, createDevice);
 router.get('/devices/state', deviceState);
 router.get('/devices/online', onlineState);

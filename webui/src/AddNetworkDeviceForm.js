@@ -32,14 +32,13 @@ class AddNetworkDeviceForm extends Component {
     if (res.status === 401) {
       return this.props.onUnauthorized();
     }
-    console.log('created device');
     this.setState({creating: false});
   }
 
   render() {
     return this.state.creating
       ? (
-        <Grid columns='equal'>
+        <Grid columns='equal' textAlign='left'>
           <Grid.Column>
             <Form>
               <Form.Field>
