@@ -14,6 +14,7 @@ const iptables = require('./iptables'),
   createService = require('./services/create'),
   deviceEthernet = require('./devices/ethernet'),
   validateService = require('./services/validate'),
+  pihole = require('./pihole'),
   enforceAdmin = require('../middleware/jwtVerify')('admin');
 
 router.use('/auth', auth);
@@ -29,3 +30,4 @@ router.get('/devices/state', deviceState);
 router.get('/devices/online', onlineState);
 router.get('/devices/ethernet', deviceEthernet);
 router.use('/system', system);
+router.use('/pihole', pihole);

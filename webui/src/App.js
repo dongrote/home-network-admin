@@ -5,6 +5,7 @@ import BlockableDevices from './BlockableDevices';
 import WakeOnLanDevices from './WakeOnLanDevices';
 import MFATokenInput from './MFATokenInput';
 import BlockableServices from './BlockableServices';
+import AdBlockButton from './AdBlockButton';
 import jwt from 'jsonwebtoken';
 
 const socket = io();
@@ -17,6 +18,7 @@ class App extends Component {
     wol: [],
     verifying: false,
     role: 'guest',
+    adblockEnabled: true,
   };
 
   async fetchDevices() {
@@ -37,6 +39,12 @@ class App extends Component {
     this.setState({wol: json.state});
   }
 
+  async fetchAdblock() {
+    var res = await fetch('/api/pihole/enabled');
+    var json = await res.json();
+    this.setState({adblockEnabled: json.enabled});
+  }
+
   updateRole() {
     var signedTokenCookie = document.cookie.split(';').find(s => s.startsWith('jwt='));
     var role = 'guest';
@@ -49,7 +57,7 @@ class App extends Component {
 
   async updateState() {
     this.updateRole();
-    await [this.fetchDevices(), this.fetchServices(), this.fetchWakeOnLan()];
+    await [this.fetchDevices(), this.fetchServices(), this.fetchWakeOnLan(), this.fetchAdblock()];
   }
 
   componentDidMount() {
@@ -58,7 +66,8 @@ class App extends Component {
       .on('connect', () => this.updateState())
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}))
-      .on('wol', wol => this.setState({wol}));
+      .on('wol', wol => this.setState({wol}))
+      .on('adblock', adblock => this.setState({adblockEnabled: adblock.enabled}));
     this.updateState();
   }
 
@@ -88,6 +97,9 @@ class App extends Component {
               {this.state.role === 'admin'
                 ? <Button fluid positive content='Authenticated' icon='lock' labelPosition='left' />
                 : <Button fluid negative content='Authenticate' icon='unlock' labelPosition='left' onClick={() => this.setState({verifying: true})} />}
+            </Segment>
+            <Segment textAlign='center'>
+              <AdBlockButton fluid disabled={!this.state.adblockEnabled}/>
             </Segment>
             <WakeOnLanDevices
               role={this.state.role}
