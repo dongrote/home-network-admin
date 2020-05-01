@@ -18,6 +18,7 @@ exports = module.exports = {
   piholeUri: () => _.get(process.env, 'PIHOLE_URI', 'http://pi.hole'),
   piholeWebpassword: () => _.get(process.env, 'PIHOLE_WEBPASSWORD', ''),
   piholeDnsRestartGracePeriod: () => Number(_.get(process.env, 'PIHOLE_DNS_RESTART_GRACE_PERIOD_MS', '3000')),
+  adblockDisableTime: () => Number(_.get(process.env, 'ADBLOCK_DISABLE_TIME_IN_SECONDS', '300')),
   firewallApiUri: () => _.get(process.env, 'FIREWALL_API_URI', 'http://pi.hole:3000'),
   networkDevicesYamlFile: () => path.join(configDirectory(), _.get(process.env, 'NETWORK_DEVICES_YAML', 'network-devices.yaml')),
   networkServicesYamlFile: () => path.join(configDirectory(), _.get(process.env, 'NETWORK_SERVICES_YAML', 'network-services.yaml')),
@@ -26,5 +27,4 @@ exports = module.exports = {
   pingCount: () => Number(_.get(process.env, 'PING_COUNT', '1')),
   publickeyPath: () => path.join(configDirectory(), _.get(process.env, 'JWT_PUBLIC_KEY', 'jwtkey.rsa.pub.pem')),
   privatekeyPath: () => path.join(configDirectory(), _.get(process.env, 'JWT_PRIVATE_KEY', 'jwtkey.rsa.pem')),
-
 };

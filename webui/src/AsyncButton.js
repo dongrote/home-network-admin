@@ -20,7 +20,11 @@ class AsyncButton extends Component {
     return (
       <Button
         fluid={this.props.fluid}
+        content={this.props.content}
         icon={this.props.icon}
+        iconPosition={this.props.iconPosition}
+        label={this.props.label}
+        labelPosition={this.props.labelPosition}
         primary={this.props.primary}
         submit={this.props.submit}
         color={this.props.color}
