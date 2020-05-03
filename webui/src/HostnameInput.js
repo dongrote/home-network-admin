@@ -35,7 +35,7 @@ class HostnameInput extends Component {
     return (
       <Input iconPosition='right'>
         <input
-          placeholder='hostname.com'
+          placeholder={this.props.placeholder || 'hostname.com'}
           value={this.state.hostname}
           onInput={e => this.onInput(e.target.value)}
         />

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Input, Icon, Grid, Form} from 'semantic-ui-react';
+import HostnameInput from './HostnameInput';
 
 class AddNetworkServiceForm extends Component {
   state = {
@@ -8,13 +9,13 @@ class AddNetworkServiceForm extends Component {
     icon: '',
     domain: '',
     color: '',
+    validDomain: false,
     validateIcon: null,
     maySubmit: false,
   };
-  domainTimeout = null;
 
   validDomain() {
-    return this.state.validateIcon === 'check circle outline';
+    return this.state.validDomain;
   }
 
   validName() {
@@ -50,30 +51,12 @@ class AddNetworkServiceForm extends Component {
     });
   }
 
-  async validateDomain() {
-    if (this.state.domain.length === 0) return;
-    var res = await fetch(`/api/services/validate?domain=${encodeURIComponent(this.state.domain)}`);
-    if (res.ok) {
-      var json = await res.json();
-      this.setState({
-        validateIcon: json.valid ? 'check circle outline' : 'times circle outline',
-        validateIconColor: json.valid ? 'green' : 'red',
-        maySubmit: this.validName() && json.valid && this.validColor() && this.validIcon(),
-      });
-    }
-  }
-
-  onDomainInput(value) {
-    if (this.domainTimeout) {
-      clearTimeout(this.domainTimeout);
-      this.domainTimeout = null;
-    }
+  onDomainInput(domain, valid) {
     this.setState({
-      domain: value,
-      validateIcon: null,
-      maySubmit: false,
+      domain,
+      validDomain: valid,
+      maySubmit: this.validName() && this.validColor() && this.validIcon() && valid
     });
-    this.domainTimeout = setTimeout(() => this.validateDomain(), 1000);
   }
 
   async onSubmit() {
@@ -118,14 +101,10 @@ class AddNetworkServiceForm extends Component {
               <Form>
                 <Form.Field>
                   <label>Domain</label>
-                  <Input iconPosition='right'>
-                    <input
-                      placeholder='service.com'
-                      value={this.state.domain}
-                      onInput={e => this.onDomainInput(e.target.value)}
-                    />
-                    {this.state.validateIcon && <Icon color={this.state.validateIconColor} name={this.state.validateIcon}/>}
-                  </Input>
+                  <HostnameInput
+                    placeholder='service.com'
+                    onValidateHostname={(domain, valid) => this.onDomainInput(domain, valid)}
+                  />
                 </Form.Field>
               </Form>
             </Grid.Column>
