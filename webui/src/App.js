@@ -19,6 +19,7 @@ class App extends Component {
     verifying: false,
     role: 'guest',
     adblockEnabled: true,
+    adblockDisabledUntil: null,
   };
 
   async fetchDevices() {
@@ -67,7 +68,10 @@ class App extends Component {
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}))
       .on('wol', wol => this.setState({wol}))
-      .on('adblock', adblock => this.setState({adblockEnabled: adblock.enabled}));
+      .on('adblock', adblock => this.setState({
+        adblockEnabled: adblock.enabled,
+        adblockDisabledUntil: adblock.until ? new Date(adblock.until) : null,
+      }));
     this.updateState();
   }
 
@@ -99,7 +103,11 @@ class App extends Component {
                 : <Button fluid negative content='Authenticate' icon='unlock' labelPosition='left' onClick={() => this.setState({verifying: true})} />}
             </Segment>
             <Segment textAlign='center'>
-              <AdBlockButton fluid disabled={!this.state.adblockEnabled}/>
+              <AdBlockButton
+                fluid
+                disabled={!this.state.adblockEnabled}
+                enableAt={this.state.adblockDisabledUntil}
+              />
             </Segment>
             <WakeOnLanDevices
               role={this.state.role}
