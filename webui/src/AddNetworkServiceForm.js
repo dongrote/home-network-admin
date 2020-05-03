@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Input, Icon, Label, Grid, Form} from 'semantic-ui-react';
+import {Button, Input, Icon, Grid, Form} from 'semantic-ui-react';
 
 class AddNetworkServiceForm extends Component {
   state = {
