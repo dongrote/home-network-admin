@@ -1,25 +1,28 @@
 import React, {Component} from 'react';
 import {Button, Grid, Form} from 'semantic-ui-react';
+import HostnameInput from './HostnameInput';
 
 class AddNetworkDeviceForm extends Component {
   state = {
     creating: false,
     name: '',
     hostname: '',
+    validHostname: false,
     maySubmit: false,
   };
 
   onNameInput(input) {
     this.setState({
       name: input,
-      maySubmit: this.state.hostname.length > 0 && input.length > 0,
+      maySubmit: this.state.validHostname && input.length > 0,
     });
   }
 
-  onHostnameInput(input) {
+  onHostnameInput(hostname, valid) {
     this.setState({
-      hostname: input.toLowerCase(),
-      maySubmit: this.state.name.length > 0 && input.length > 0,
+      hostname,
+      validHostname: valid,
+      maySubmit: this.state.name.length > 0 && valid,
     });
   }
 
@@ -38,23 +41,27 @@ class AddNetworkDeviceForm extends Component {
   render() {
     return this.state.creating
       ? (
-        <Grid columns='equal' textAlign='left'>
-          <Grid.Column>
-            <Form>
-              <Form.Field>
-                <label>Name</label>
-                <input placeholder='Name' onInput={e => this.onNameInput(e.target.value)} value={this.state.name} />
-              </Form.Field>
-            </Form>
-          </Grid.Column>
-          <Grid.Column>
-            <Form>
-              <Form.Field>
-                <label>Hostname</label>
-                <input placeholder='hostname.lan' onInput={e => this.onHostnameInput(e.target.value)} value={this.state.hostname} />
-              </Form.Field>
-            </Form>
-          </Grid.Column>
+        <Grid textAlign='left'>
+          <Grid.Row>
+            <Grid.Column>
+              <Form>
+                <Form.Field>
+                  <label>Name</label>
+                  <input placeholder='Name' onInput={e => this.onNameInput(e.target.value)} value={this.state.name} />
+                </Form.Field>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <Form>
+                <Form.Field>
+                  <label>Hostname</label>
+                  <HostnameInput onValidateHostname={(hostname, valid) => this.onHostnameInput(hostname, valid)}/>
+                </Form.Field>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column>
               <Button fluid primary disabled={!this.state.maySubmit} type='submit' onClick={() => this.onSubmit()}>Add</Button>
