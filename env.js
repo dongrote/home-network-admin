@@ -27,4 +27,6 @@ exports = module.exports = {
   pingCount: () => Number(_.get(process.env, 'PING_COUNT', '1')),
   publickeyPath: () => path.join(configDirectory(), _.get(process.env, 'JWT_PUBLIC_KEY', 'jwtkey.rsa.pub.pem')),
   privatekeyPath: () => path.join(configDirectory(), _.get(process.env, 'JWT_PRIVATE_KEY', 'jwtkey.rsa.pem')),
+  thermalZoneFilePath: () => _.get(process.env, 'THERMAL_ZONE_PATH'),
+  thermalZoneCritical: () => Number(_.get(process.env, 'THERMAL_ZONE_CRITICAL')),
 };

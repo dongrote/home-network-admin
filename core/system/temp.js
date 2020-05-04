@@ -1,5 +1,6 @@
 'use strict';
-const fs = require('fs');
+const env = require('../../env'),
+  fs = require('fs');
 
 const ctof = c => (c * 1.8) + 32;
 
