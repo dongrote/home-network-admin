@@ -9,7 +9,7 @@ export default props => (
       </Button>
     </Grid.Column>
     <Grid.Column>
-      <Grid columns='equal'>
+      <Grid columns='equal' stackable>
         {Array.isArray(props.children)
           ? props.children.map((c, k) => (<Grid.Column key={k}>{c}</Grid.Column>))
           : (<Grid.Column>{props.children}</Grid.Column>)}
