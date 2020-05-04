@@ -1,5 +1,6 @@
 'use strict';
-const loadavg = require('./loadavg');
+const loadavg = require('./loadavg'),
+  temp = require('./temp');
 
-exports = module.exports = () => loadavg()
-  .then(loadArray => ({loadavg: loadArray}));
+exports = module.exports = () => Promise.all([loadavg(), temp()])
+  .then(([loadArray, tempReading]) => ({loadavg: loadArray, temp: tempReading}));

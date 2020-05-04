@@ -6,6 +6,7 @@ import WakeOnLanDevices from './WakeOnLanDevices';
 import MFATokenInput from './MFATokenInput';
 import BlockableServices from './BlockableServices';
 import AdBlockButton from './AdBlockButton';
+import SystemInformation from './SystemInformation';
 import jwt from 'jsonwebtoken';
 
 const socket = io();
@@ -20,6 +21,12 @@ class App extends Component {
     role: 'guest',
     adblockEnabled: true,
     adblockDisabledUntil: null,
+    tempC: null,
+    tempF: null,
+    tempMax: null,
+    loadavg1: null,
+    loadavg5: null,
+    loadavg15: null,
   };
 
   async fetchDevices() {
@@ -46,6 +53,19 @@ class App extends Component {
     this.setState({adblockEnabled: json.enabled});
   }
 
+  async fetchSystemState() {
+    var res = await fetch('/api/system/state');
+    var json = await res.json();
+    this.setState({
+      tempC: json.state.temp.celsius,
+      tempMax: json.state.temp.critical,
+      tempF: json.state.temp.fahrenheit,
+      loadavg1: json.state.loadavg[0],
+      loadavg5: json.state.loadavg[1],
+      loadavg15: json.state.loadavg[2],
+    });
+  }
+
   updateRole() {
     var signedTokenCookie = document.cookie.split(';').find(s => s.startsWith('jwt='));
     var role = 'guest';
@@ -58,12 +78,21 @@ class App extends Component {
 
   async updateState() {
     this.updateRole();
-    await [this.fetchDevices(), this.fetchServices(), this.fetchWakeOnLan(), this.fetchAdblock()];
+    await [
+      this.fetchDevices(),
+      this.fetchServices(),
+      this.fetchWakeOnLan(),
+      this.fetchAdblock(),
+      this.fetchSystemState(),
+    ];
   }
 
   componentDidMount() {
     socket
-      .on('ping', () => this.updateRole())
+      .on('ping', () => {
+        this.updateRole();
+        this.fetchSystemState();
+      })
       .on('connect', () => this.updateState())
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}))
@@ -123,6 +152,13 @@ class App extends Component {
               role={this.state.role}
               services={this.state.services}
               onUnauthorized={() => this.onUnauthorized()}
+            />
+            <SystemInformation
+              fahrenheit={this.state.tempF}
+              celsius={this.state.tempC}
+              loadavg1={this.state.loadavg1}
+              loadavg5={this.state.loadavg5}
+              loadavg15={this.state.loadavg15}
             />
             {this.state.role === 'admin'
               ? <Image bordered centered src='/api/auth/qrcode' />
