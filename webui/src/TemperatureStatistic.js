@@ -2,7 +2,7 @@ import React from 'react';
 import {Statistic, Icon} from 'semantic-ui-react';
 
 export default props => (
-  <Statistic size='tiny'>
+  <Statistic size='mini' onClick={() => props.onClick()}>
     <Statistic.Label>{props.tempUnit}</Statistic.Label>
     <Statistic.Value>
       <Icon name='thermometer'/>
