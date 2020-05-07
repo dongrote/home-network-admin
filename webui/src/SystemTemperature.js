@@ -14,6 +14,10 @@ class SystemTemperature extends Component {
           tempValue={this.state.showFahrenheit ? this.props.fahrenheit : this.props.celsius}
           tempUnit={this.state.showFahrenheit ? 'Fahrenheit' : 'Celsius'}
         />
+        <TemperatureStatistic onClick={() => this.toggleUnit()}
+          tempValue={!this.state.showFahrenheit ? this.props.fahrenheit : this.props.celsius}
+          tempUnit={!this.state.showFahrenheit ? 'Fahrenheit' : 'Celsius'}
+        />
       </SystemInformationRow>
     );
   }
