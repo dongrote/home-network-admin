@@ -10,6 +10,8 @@ import SystemInformation from './SystemInformation';
 import jwt from 'jsonwebtoken';
 
 const socket = io();
+const displayServices = false;
+const disableAdBlockWorks = false;
 
 class App extends Component {
   state = {
@@ -80,9 +82,9 @@ class App extends Component {
     this.updateRole();
     await [
       this.fetchDevices(),
-      this.fetchServices(),
+      displayServices ? this.fetchServices() : Promise.resolve(),
       this.fetchWakeOnLan(),
-      this.fetchAdblock(),
+      disableAdBlockWorks ? this.fetchAdblock() : Promise.resolve(),
       this.fetchSystemState(),
     ];
   }
@@ -131,13 +133,15 @@ class App extends Component {
                 ? <Button fluid positive content='Authenticated' icon='lock' labelPosition='left' />
                 : <Button fluid negative content='Authenticate' icon='unlock' labelPosition='left' onClick={() => this.setState({verifying: true})} />}
             </Segment>
-            <Segment textAlign='center'>
-              <AdBlockButton
-                fluid
-                disabled={!this.state.adblockEnabled}
-                enableAt={this.state.adblockDisabledUntil}
-              />
+            {disableAdBlockWorks &&
+              <Segment textAlign='center'>
+                <AdBlockButton
+                  fluid
+                  disabled={!this.state.adblockEnabled}
+                  enableAt={this.state.adblockDisabledUntil}
+                />
             </Segment>
+            }
             <WakeOnLanDevices
               role={this.state.role}
               devices={this.state.wol}
@@ -148,11 +152,12 @@ class App extends Component {
               devices={this.state.devices}
               onUnauthorized={() => this.onUnauthorized()}
             />
-            <BlockableServices
-              role={this.state.role}
-              services={this.state.services}
-              onUnauthorized={() => this.onUnauthorized()}
-            />
+            {displayServices &&
+              <BlockableServices
+                role={this.state.role}
+                services={this.state.services}
+                onUnauthorized={() => this.onUnauthorized()}
+              />}
             <SystemInformation
               fahrenheit={this.state.tempF}
               celsius={this.state.tempC}
