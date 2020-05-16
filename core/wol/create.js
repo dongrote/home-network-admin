@@ -7,7 +7,7 @@ exports = module.exports = device => {
   const storedDevice = {
     hostname: device.hostname,
     name: device.name,
-    hwaddress: device.hwaddr,
+    hwaddress: device.hwaddress,
   };
   return available()
     .then(devices => {
