@@ -59,9 +59,6 @@ class App extends Component {
     var res = await fetch('/api/system/state');
     var json = await res.json();
     this.setState({
-      tempC: json.state.temp.celsius,
-      tempMax: json.state.temp.critical,
-      tempF: json.state.temp.fahrenheit,
       loadavg1: json.state.loadavg[0],
       loadavg5: json.state.loadavg[1],
       loadavg15: json.state.loadavg[2],
@@ -159,8 +156,6 @@ class App extends Component {
                 onUnauthorized={() => this.onUnauthorized()}
               />}
             <SystemInformation
-              fahrenheit={this.state.tempF}
-              celsius={this.state.tempC}
               loadavg1={this.state.loadavg1}
               loadavg5={this.state.loadavg5}
               loadavg15={this.state.loadavg15}
