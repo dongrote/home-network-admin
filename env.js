@@ -29,4 +29,8 @@ exports = module.exports = {
   privatekeyPath: () => path.join(configDirectory(), _.get(process.env, 'JWT_PRIVATE_KEY', 'jwtkey.rsa.pem')),
   thermalZoneFilePath: () => _.get(process.env, 'THERMAL_ZONE_PATH'),
   thermalZoneCritical: () => Number(_.get(process.env, 'THERMAL_ZONE_CRITICAL')),
+  maxLoadHistory: () => Number(_.get(process.env, 'MAX_LOAD_HISTORY', '1000')),
+  loadPollPeriod: () => Number(_.get(process.env, 'LOAD_POLL_PERIOD', '2000')),
+  maxTempHistory: () => Number(_.get(process.env, 'MAX_TEMP_HISTORY', '1000')),
+  tempPollPeriod: () => Number(_.get(process.env, 'TEMP_POLL_PERIOD', '2000')),
 };
