@@ -23,12 +23,11 @@ class App extends Component {
     role: 'guest',
     adblockEnabled: true,
     adblockDisabledUntil: null,
-    tempC: null,
-    tempF: null,
-    tempMax: null,
-    loadavg1: null,
-    loadavg5: null,
-    loadavg15: null,
+    systemTempCelsius: null,
+    systemTempFahrenheit: null,
+    systemTempHistory: [],
+    systemLoad: null,
+    systemLoadHistory: [],
   };
 
   async fetchDevices() {
@@ -55,6 +54,27 @@ class App extends Component {
     this.setState({adblockEnabled: json.enabled});
   }
 
+  async fetchSystem() {
+    var res = await fetch('/api/system/state');
+    var json = await res.json();
+    const systemTempCelsius = json.state.temp.celsius;
+    const systemTempFahrenheit = json.state.temp.fahrenheit;
+    const systemLoad = json.state.loadavg[0];
+    res = await fetch('/api/system/history?name=load');
+    json = await res.json();
+    const systemLoadHistory = json;
+    res = await fetch('/api/system/history?name=temp');
+    json = await res.json();
+    const systemTempHistory = json;
+    this.setState({
+      systemTempCelsius,
+      systemTempFahrenheit,
+      systemTempHistory,
+      systemLoad,
+      systemLoadHistory,
+    });
+  }
+
   updateRole() {
     var signedTokenCookie = document.cookie.split(';').find(s => s.startsWith('jwt='));
     var role = 'guest';
@@ -77,10 +97,16 @@ class App extends Component {
 
   componentDidMount() {
     socket
-      .on('ping', () => {
-        this.updateRole();
-        this.fetchSystemState();
-      })
+      .on('ping', () => this.updateRole())
+      .on('temp', msg => this.setState({
+        systemTempCelsius: msg.temp.celsius,
+        systemTempFahrenheit: msg.temp.fahrenheit,
+        systemTempHistory: msg.history,
+      }))
+      .on('load', msg => this.setState({
+        systemLoad: msg.load,
+        systemLoadHistory: msg.history,
+      }))
       .on('connect', () => this.updateState())
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}))
@@ -90,6 +116,7 @@ class App extends Component {
         adblockDisabledUntil: adblock.until ? new Date(adblock.until) : null,
       }));
     this.updateState();
+    this.fetchSystem();
   }
 
   onUnauthorized() {
@@ -144,7 +171,13 @@ class App extends Component {
                 services={this.state.services}
                 onUnauthorized={() => this.onUnauthorized()}
               />}
-            <SystemInformation />
+            <SystemInformation
+              fahrenheit={this.state.systemTempFahrenheit}
+              celsius={this.state.systemTempCelsius}
+              load={this.state.systemLoad}
+              tempHistory={this.state.systemTempHistory}
+              loadHistory={this.state.systemLoadHistory}
+            />
             {this.state.role === 'admin'
               ? <Image bordered centered src='/api/auth/qrcode' />
               : null}

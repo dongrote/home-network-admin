@@ -28,8 +28,14 @@ app.use((err, req, res, next) => {
 core.history.create('load', env.maxLoadHistory());
 core.history.create('temp', env.maxTempHistory());
 setInterval(() => core.system.loadavg()
-  .then(([load]) => core.history.add('load', load))
+  .then(([load]) => {
+    core.history.add('load', load);
+    core.Websockets.emit('load', {load, history: core.history.get('load')});
+  })
   .catch(log.error), env.loadPollPeriod());
 setInterval(() => core.system.temp()
-  .then(temp => core.history.add('temp', temp.celsius))
+  .then(temp => {
+    core.history.add('temp', temp.celsius);
+    core.Websockets.emit('temp', {temp, history: core.history.get('temp')});
+  })
   .catch(log.error), env.tempPollPeriod());

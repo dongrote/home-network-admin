@@ -10,8 +10,12 @@ export default props => (
       <SystemTemperature
         fahrenheit={props.fahrenheit}
         celsius={props.celsius}
+        history={props.tempHistory}
       />
-      <LoadAverage />
+      <LoadAverage
+        load={props.load}
+        history={props.loadHistory}
+      />
     </Grid>
   </LabeledButtonGroup>
 );
