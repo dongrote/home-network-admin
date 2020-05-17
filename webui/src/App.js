@@ -55,16 +55,6 @@ class App extends Component {
     this.setState({adblockEnabled: json.enabled});
   }
 
-  async fetchSystemState() {
-    var res = await fetch('/api/system/state');
-    var json = await res.json();
-    this.setState({
-      loadavg1: json.state.loadavg[0],
-      loadavg5: json.state.loadavg[1],
-      loadavg15: json.state.loadavg[2],
-    });
-  }
-
   updateRole() {
     var signedTokenCookie = document.cookie.split(';').find(s => s.startsWith('jwt='));
     var role = 'guest';
@@ -82,7 +72,6 @@ class App extends Component {
       displayServices ? this.fetchServices() : Promise.resolve(),
       this.fetchWakeOnLan(),
       disableAdBlockWorks ? this.fetchAdblock() : Promise.resolve(),
-      this.fetchSystemState(),
     ];
   }
 
@@ -155,11 +144,7 @@ class App extends Component {
                 services={this.state.services}
                 onUnauthorized={() => this.onUnauthorized()}
               />}
-            <SystemInformation
-              loadavg1={this.state.loadavg1}
-              loadavg5={this.state.loadavg5}
-              loadavg15={this.state.loadavg15}
-            />
+            <SystemInformation />
             {this.state.role === 'admin'
               ? <Image bordered centered src='/api/auth/qrcode' />
               : null}

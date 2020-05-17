@@ -8,6 +8,7 @@ class SystemTemperature extends Component {
     showFahrenheit: true,
     celsius: null,
     fahrenheit: null,
+    critical: null,
     history: [],
   };
 
@@ -34,6 +35,7 @@ class SystemTemperature extends Component {
       history,
       celsius: current.celsius,
       fahrenheit: current.fahrenheit,
+      critical: current.critical,
     });
     setTimeout(() => this.updateState(), 1000);
   }
@@ -47,8 +49,8 @@ class SystemTemperature extends Component {
           tempValue={this.state.showFahrenheit ? this.state.fahrenheit : this.state.celsius}
           tempUnit={this.state.showFahrenheit ? 'Fahrenheit' : 'Celsius'}
         />
-        <Sparklines data={this.state.history} width={100} height={40} margin={5}>
-          <SparklinesLine color='blue'/>
+        <Sparklines data={this.state.history} min={25} max={this.state.critical}>
+          <SparklinesLine color='orange' />
         </Sparklines>
       </SystemInformationRow>
     );
