@@ -5,7 +5,10 @@ import {Statistic} from 'semantic-ui-react';
 
 export default props => (
   <SystemInformationRow label='Load'>
-    <Statistic size='mini' value={props.load} />
+    <Statistic size='mini'>
+      <Statistic.Value>{props.load}</Statistic.Value>
+      <Statistic.Label>Load</Statistic.Label>
+    </Statistic>
     <Sparklines data={props.history}>
       <SparklinesLine color='blue' />
     </Sparklines>
