@@ -19,7 +19,6 @@ export default props => (
         <Grid.Row columns={1}>
           <Grid.Column>
             <Header>No Devices</Header>
-            Populate <tt>/var/run/home-network-admin/wol-devices.yaml</tt>.
           </Grid.Column>
         </Grid.Row>
       </Grid>

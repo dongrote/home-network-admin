@@ -13,6 +13,7 @@ class BlockableDeviceRow extends Component {
     this.setState({
       onlineStatus: json.online ? 'online' : 'offline',
     });
+    setTimeout(() => this.updateOnlineStatus(), 10000);
   }
 
   componentDidMount() {

@@ -7,15 +7,15 @@ const colors = {
   checking: 'black',
 };
 
-const content = {
-  online: 'Online',
-  offline: 'Offline',
-  checking: 'Checking...',
+const icon = {
+  online: 'power',
+  offline: 'power',
+  checking: 'spinner',
 };
 
 export default props => (
-  <Button fluid onClick={() => props.onClick ? props.onClick() : null}>
-    <Icon name='power' color={colors[props.onlineStatus]} />
-    {props.canonicalName} {content[props.onlineStatus]}
+  <Button basic fluid onClick={() => props.onClick ? props.onClick() : null}>
+    <Icon name={icon[props.onlineStatus]} loading={props.onlineStatus === 'checking'} color={colors[props.onlineStatus]} />
+    {props.canonicalName}
   </Button>
 );

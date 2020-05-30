@@ -13,6 +13,7 @@ class BlockableDeviceRow extends Component {
     this.setState({
       onlineStatus: json.online ? 'online' : 'offline',
     });
+    setTimeout(() => this.updateOnlineStatus(), 10000);
   }
 
   componentDidMount() {
@@ -32,6 +33,7 @@ class BlockableDeviceRow extends Component {
           <Grid.Column>
             <WakeUpButton
               mac={this.props.hwaddress}
+              online={this.state.onlineStatus === 'online'}
               onUnauthorized={this.props.onUnauthorized}
             />
           </Grid.Column>

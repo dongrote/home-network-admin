@@ -20,7 +20,6 @@ export default props => (
         <Grid.Row columns={1}>
           <Grid.Column>
             <Header>No Devices</Header>
-            Populate <tt>/var/run/home-network-admin/network-devices.yaml</tt>.
           </Grid.Column>
         </Grid.Row>
       </Grid>
