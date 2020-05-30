@@ -155,14 +155,14 @@ class App extends Component {
                 />
             </Segment>
             }
-            <WakeOnLanDevices
-              role={this.state.role}
-              devices={this.state.wol}
-              onUnauthorized={() => this.onUnauthorized()}
-            />
             <BlockableDevices
               role={this.state.role}
               devices={this.state.devices}
+              onUnauthorized={() => this.onUnauthorized()}
+            />
+            <WakeOnLanDevices
+              role={this.state.role}
+              devices={this.state.wol}
               onUnauthorized={() => this.onUnauthorized()}
             />
             {displayServices &&
