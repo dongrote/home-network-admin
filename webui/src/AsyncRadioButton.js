@@ -13,7 +13,8 @@ class AsyncRadioButton extends Component {
   render() {
     return <Radio
       toggle
-      onClick={() => this.click()}
+      disabled={this.props.disabled}
+      onClick={this.props.onClick ? () => this.click() : undefined}
       indeterminate={this.state.loading}
       label={this.state.loading ? 'Working ...' : this.props.label}
       checked={this.props.checked}

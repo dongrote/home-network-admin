@@ -4,14 +4,14 @@ import BlockableServiceButton from './BlockableServiceButton';
 
 export default props => (
   <Grid>
-    <Grid.Row columns={2}>
+    <Grid.Row columns={2} verticalAlign='middle'>
       <Grid.Column>
         <Button fluid size='large' color={props.color}>
           <Icon name={props.icon} />
           {props.canonicalService}
         </Button>
       </Grid.Column>
-      <Grid.Column textAlign='left' verticalAlign='middle'>
+      <Grid.Column>
         <BlockableServiceButton
           service={props.service}
           blocked={props.blocked}

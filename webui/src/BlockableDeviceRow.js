@@ -13,6 +13,7 @@ class BlockableDeviceRow extends Component {
     this.setState({
       onlineStatus: json.online ? 'online' : 'offline',
     });
+    setTimeout(() => this.updateOnlineStatus(), 60000);
   }
 
   componentDidMount() {
@@ -29,7 +30,7 @@ class BlockableDeviceRow extends Component {
               canonicalName={this.props.canonicalDevice}
               onlineStatus={this.state.onlineStatus} />
           </Grid.Column>
-          <Grid.Column textAlign='left'>
+          <Grid.Column>
             <BlockableDeviceButton
               device={this.props.device}
               blocked={this.props.blocked}
