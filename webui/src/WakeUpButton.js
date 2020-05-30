@@ -7,7 +7,7 @@ export default props => (
     fluid
     color='yellow'
     disabled={props.online}
-    onClick={() => fetch(`/api/wol/?mac=${encodeURIComponent(props.mac)}`)
+    onClick={props.online ? undefined : () => fetch(`/api/wol/?mac=${encodeURIComponent(props.mac)}`)
       .then(res => res.status === 401 ? props.onUnauthorized() : null)}
     checked={props.online}
     label={props.online ? 'On' : 'Off'}
