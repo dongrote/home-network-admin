@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Radio} from 'semantic-ui-react';
+import { Radio, Icon } from 'semantic-ui-react';
 
 class AsyncRadioButton extends Component {
   state = {loading: false};
@@ -16,7 +16,7 @@ class AsyncRadioButton extends Component {
       disabled={this.props.disabled}
       onClick={this.props.onClick ? () => this.click() : undefined}
       indeterminate={this.state.loading}
-      label={this.state.loading ? 'Working ...' : this.props.label}
+      label={this.state.loading ? {children: <Icon name='spinner' loading />} : this.props.label}
       checked={this.props.checked}
     />;
   }
