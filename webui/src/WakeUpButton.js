@@ -1,10 +1,11 @@
 import React from 'react';
 import AsyncRadioButton from './AsyncRadioButton';
 
-const promiseSleep = ms => new Promise(resolve => setTimeout(() => resolve(), ms));
+const sleepTimeInSeconds = 30;
+const promiseSleep = s => new Promise(resolve => setTimeout(() => resolve(), s * 1000));
 
 const wakeUpTarget = mac => fetch(`/api/wol/?mac=${encodeURIComponent(mac)}`)
-  .then(res => res.status === 401 ? res : promiseSleep(10000).then(() => res));
+  .then(res => res.status === 401 ? res : promiseSleep(sleepTimeInSeconds).then(() => res));
 
 export default props => (
   <AsyncRadioButton
