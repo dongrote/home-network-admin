@@ -7,7 +7,6 @@
 FROM node:12-alpine AS server-builder
 WORKDIR /usr/src/app
 COPY package.json .
-COPY package-lock.json .
 RUN npm i
 
 FROM node:12-alpine
