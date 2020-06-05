@@ -20,7 +20,7 @@ const iptables = require('./iptables'),
 router.use('/auth', auth);
 router.use('/iptables', enforceAdmin, iptables);
 router.get('/wol/state', wolState);
-router.use('/wol', enforceAdmin, wol);
+router.use('/wol', wol);
 router.get('/services/validate', validateService);
 router.get('/services/state', serviceState);
 router.use('/services', enforceAdmin, services);
