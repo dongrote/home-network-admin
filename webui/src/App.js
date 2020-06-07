@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
-import {Container, Grid, Segment, Button, Image} from 'semantic-ui-react';
+import {Container, Grid, Segment, Button} from 'semantic-ui-react';
 import BlockableDevices from './BlockableDevices';
 import WakeOnLanDevices from './WakeOnLanDevices';
 import MFATokenInput from './MFATokenInput';
 import BlockableServices from './BlockableServices';
 import AdBlockButton from './AdBlockButton';
 import SystemInformation from './SystemInformation';
+import QRCode from './QRCode';
 import jwt from 'jsonwebtoken';
 
 const socket = io();
@@ -171,6 +172,7 @@ class App extends Component {
                 services={this.state.services}
                 onUnauthorized={() => this.onUnauthorized()}
               />}
+            {this.state.role === 'admin' && <QRCode src='/api/auth/qrcode' />}
             <SystemInformation
               fahrenheit={this.state.systemTempFahrenheit}
               celsius={this.state.systemTempCelsius}
@@ -178,9 +180,6 @@ class App extends Component {
               tempHistory={this.state.systemTempHistory}
               loadHistory={this.state.systemLoadHistory}
             />
-            {this.state.role === 'admin'
-              ? <Image bordered centered src='/api/auth/qrcode' />
-              : null}
           </Segment.Group>
         </Container>
         );
