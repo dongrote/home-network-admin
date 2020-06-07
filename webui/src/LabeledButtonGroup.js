@@ -1,20 +1,41 @@
-import React from 'react';
-import { Segment, Header } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Segment, Header, Grid, Button } from 'semantic-ui-react';
 
-const LabeledButtonGroup = props => {
-  props.children = Array.isArray(props.children) ? props.children : [props.children];
-  return (
-  <Segment color={props.color} loading={props.loading}>
-    <Segment vertical>
-      <Header as='h2' textAlign='left'>{props.label}</Header>
-    </Segment>
-    {props.children.map((child, i) => (
-      <Segment key={i} vertical textAlign='center'>
-        {child}
+class LabeledButtonGroup extends Component {
+  state = {show: false};
+
+  onShowToggle() {
+    this.setState({show: !this.state.show});
+  }
+
+  render() {
+    const children = Array.isArray(this.props.children) ? this.props.children : [this.props.children];
+    return (
+      <Segment color={this.props.color} loading={this.props.loading}>
+        <Segment vertical>
+          <Grid columns={2}>
+            <Grid.Row>
+              <Grid.Column>
+                <Header as='h2' textAlign='left'>{this.props.label}</Header>
+              </Grid.Column>
+              <Grid.Column textAlign='right'>
+                <Button
+                  basic
+                  content={this.state.show ? 'Hide' : 'Show'}
+                  onClick={() => this.onShowToggle()}
+                />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
+        {this.state.show && children.map((child, i) => (
+          <Segment key={i} vertical textAlign='center'>
+            {child}
+          </Segment>
+        ))}
       </Segment>
-    ))}
-  </Segment>
-);
-    };
+    );
+  }
+}
 
 export default LabeledButtonGroup;
