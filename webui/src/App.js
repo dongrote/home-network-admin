@@ -5,6 +5,7 @@ import BlockableDevices from './BlockableDevices';
 import WakeOnLanDevices from './WakeOnLanDevices';
 import MFATokenInput from './MFATokenInput';
 import BlockableServices from './BlockableServices';
+import ThrottledDevices from './ThrottledDevices';
 import AdBlockButton from './AdBlockButton';
 import SystemInformation from './SystemInformation';
 import QRCode from './QRCode';
@@ -29,6 +30,8 @@ class App extends Component {
     systemTempHistory: [],
     systemLoad: null,
     systemLoadHistory: [],
+    throttleBandwidth: '28kbps',
+    throttledHosts: [],
   };
 
   async fetchDevices() {
@@ -76,6 +79,15 @@ class App extends Component {
     });
   }
 
+  async fetchThrottle() {
+    var res = await fetch('/api/throttle');
+    var json = await res.json();
+    this.setState({
+      throttleBandwidth: json.bandwidth,
+      throttledHosts: json.hosts,
+    });
+  }
+
   updateRole() {
     var signedTokenCookie = document.cookie.split(';').find(s => s.startsWith('jwt='));
     var role = 'guest';
@@ -112,12 +124,17 @@ class App extends Component {
       .on('devices', devices => this.setState({devices}))
       .on('services', services => this.setState({services}))
       .on('wol', wol => this.setState({wol}))
+      .on('throttle', throttle => this.setState({
+        throttleBandwidth: throttle.bandwidth,
+        throttledHosts: throttle.hosts,
+      }))
       .on('adblock', adblock => this.setState({
         adblockEnabled: adblock.enabled,
         adblockDisabledUntil: adblock.until ? new Date(adblock.until) : null,
       }));
     this.updateState();
     this.fetchSystem();
+    this.fetchThrottle();
   }
 
   onUnauthorized() {
@@ -166,6 +183,7 @@ class App extends Component {
               devices={this.state.wol}
               onUnauthorized={() => this.onUnauthorized()}
             />
+            <ThrottledDevices bandwidth={this.state.throttleBandwidth} hosts={this.state.throttledHosts} />
             {displayServices &&
               <BlockableServices
                 role={this.state.role}

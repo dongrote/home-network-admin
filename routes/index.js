@@ -15,6 +15,7 @@ const iptables = require('./iptables'),
   deviceEthernet = require('./devices/ethernet'),
   validateService = require('./services/validate'),
   pihole = require('./pihole'),
+  throttle = require('./throttle'),
   enforceAdmin = require('../middleware/jwtVerify')('admin');
 
 router.use('/auth', auth);
@@ -31,3 +32,4 @@ router.get('/devices/online', onlineState);
 router.get('/devices/ethernet', deviceEthernet);
 router.use('/system', system);
 router.use('/pihole', pihole);
+router.use('/throttle', throttle);
