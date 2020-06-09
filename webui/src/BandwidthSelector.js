@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Grid, Form, Statistic } from 'semantic-ui-react';
+import { Button, Grid, Form, Icon } from 'semantic-ui-react';
 
 const rangeToBandwidth = [
   '28kbit',
@@ -28,6 +28,7 @@ class BandwidthSelector extends Component {
     this.state = {
       bandwidthIndex: rangeToBandwidth.indexOf(props.bandwidth),
       loading: false,
+      error: false,
     };
   }
 
@@ -43,8 +44,16 @@ class BandwidthSelector extends Component {
 
   async setBandwidth() {
     this.setState({loading: true});
-    await fetch(`/api/throttle/bandwidth?bandwidth=${encodeURIComponent(rangeToBandwidth[this.state.bandwidthIndex])}`);
+    var res = await fetch(`/api/throttle/bandwidth?bandwidth=${encodeURIComponent(rangeToBandwidth[this.state.bandwidthIndex])}`);
     this.setState({loading: false});
+    if (!res.ok) {
+      if (res.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        this.setState({error: true});
+        setTimeout(() => this.setState({error: false}), 3000);
+      }
+    }
   }
 
   render() {
@@ -67,12 +76,14 @@ class BandwidthSelector extends Component {
           </Grid.Column>
           <Grid.Column textAlign='right'>
             <Button
-              basic
-              primary
+              basic={!this.state.error}
+              primary={!this.state.error}
+              negative={this.state.error}
+              disabled={this.state.error}
               loading={this.state.loading}
               onClick={() => this.setBandwidth()}
             >
-              Submit
+              {this.state.error ? <Icon name='warning sign' /> : 'Submit'}
             </Button>
           </Grid.Column>
         </Grid.Row>

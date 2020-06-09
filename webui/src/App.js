@@ -183,7 +183,11 @@ class App extends Component {
               devices={this.state.wol}
               onUnauthorized={() => this.onUnauthorized()}
             />
-            <ThrottledDevices bandwidth={this.state.throttleBandwidth} hosts={this.state.throttledHosts} />
+            <ThrottledDevices
+              bandwidth={this.state.throttleBandwidth}
+              hosts={this.state.throttledHosts}
+              onUnauthorized={() => this.onUnauthorized()}
+            />
             {displayServices &&
               <BlockableServices
                 role={this.state.role}
