@@ -9,6 +9,7 @@ const rangeToBandwidth = [
   '512kbit',
   '1mbit',
   '2mbit',
+  '3mbit',
   '4mbit',
   '5mbit',
   '8mbit',
