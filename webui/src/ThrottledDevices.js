@@ -4,6 +4,7 @@ import LabeledButtonGroup from './LabeledButtonGroup';
 import BandwidthSelector from './BandwidthSelector';
 import AsyncButton from './AsyncButton';
 import AddThrottledHostForm from './AddThrottledHostForm';
+import BandwidthUsage from './BandwidthUsage';
 
 const onRemoveHost = (h, onUnauthorized) => fetch(`/api/throttle/remove?hostname=${encodeURIComponent(h)}`)
   .then(res => res.status === 401 ? onUnauthorized() : null);
@@ -24,9 +25,12 @@ class ThrottledDevices extends Component {
         <BandwidthSelector bandwidth={this.props.bandwidth} onUnauthorized={this.props.onUnauthorized}/>
         <Grid>
           {this.props.hosts.map((h, i) => (
-            <Grid.Row key={i} columns={2}>
+            <Grid.Row key={i} columns={3}>
               <Grid.Column>
                 <Button fluid basic>{h}</Button>
+              </Grid.Column>
+              <Grid.Column>
+                <BandwidthUsage hostname={h} />
               </Grid.Column>
               <Grid.Column>
                 <AsyncButton

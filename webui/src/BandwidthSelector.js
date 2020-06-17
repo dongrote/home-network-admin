@@ -136,7 +136,7 @@ class BandwidthSelector extends Component {
               loading={this.state.loading}
               onClick={() => this.setBandwidth()}
             >
-              {this.state.error ? <Icon name='warning sign' /> : 'Submit'}
+              {this.state.error ? <Icon name='warning sign' /> : 'Apply'}
             </Button>
           </Grid.Column>
         </Grid.Row>
