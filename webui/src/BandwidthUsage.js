@@ -6,7 +6,7 @@ class BandwidthUsage extends Component {
   mounted = false;
 
   async updateUsage() {
-    var res = await fetch(`/api/throttle/usage?hostname=${encodeURIComponent(this.props.hostname)}&sampleTime=1`);
+    var res = await fetch(`/api/throttle/usage?hostname=${encodeURIComponent(this.props.hostname)}&sampleTime=5`);
     if (res.ok) {
       var json = await res.json();
       let usage = json.bps;
