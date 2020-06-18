@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Grid } from 'semantic-ui-react';
+import { Button, Grid, Label, Icon } from 'semantic-ui-react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import BandwidthSelector from './BandwidthSelector';
 import AsyncButton from './AsyncButton';
 import AddThrottledHostForm from './AddThrottledHostForm';
 import BandwidthUsage from './BandwidthUsage';
 
-const onRemoveHost = (h, onUnauthorized) => fetch(`/api/throttle/remove?hostname=${encodeURIComponent(h)}`)
-  .then(res => res.status === 401 ? onUnauthorized() : null);
-
 class ThrottledDevices extends Component {
-  state = {showAddNewHost: false};
 
   async onRemoveHost(h) {
     var res = await fetch(`/api/throttle/remove?hostname=${encodeURIComponent(h)}`);
@@ -25,28 +21,23 @@ class ThrottledDevices extends Component {
         <BandwidthSelector bandwidth={this.props.bandwidth} onUnauthorized={this.props.onUnauthorized}/>
         <Grid>
           {this.props.hosts.map((h, i) => (
-            <Grid.Row key={i} columns={3}>
+            <Grid.Row key={i} columns={2}>
               <Grid.Column>
-                <Button fluid basic>{h}</Button>
+                <Button as='div' labelPosition='left'>
+                  <Label basic as='a'>{h}</Label>
+                  <AsyncButton icon onClick={() => this.onRemoveHost(h)}>
+                    <Icon name='trash alternate' />
+                  </AsyncButton>
+                </Button>
               </Grid.Column>
               <Grid.Column>
                 <BandwidthUsage hostname={h} />
-              </Grid.Column>
-              <Grid.Column>
-                <AsyncButton
-                  negative
-                  fluid
-                  content='Remove'
-                  onClick={() => this.onRemoveHost(h)}
-                />
               </Grid.Column>
             </Grid.Row>
           ))}
           <Grid.Row columns={1}>
             <Grid.Column>
-              {this.state.showAddNewHost
-                ? <AddThrottledHostForm onUnauthorized={this.props.onUnauthorized} />
-                : <Button fluid content='Add New Host' onClick={() => this.setState({showAddNewHost: true})}/>}
+              <AddThrottledHostForm onUnauthorized={this.props.onUnauthorized} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

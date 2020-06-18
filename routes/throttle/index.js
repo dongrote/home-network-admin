@@ -10,7 +10,7 @@ const state = require('./state'),
   setBandwidth = require('./setBandwidth');
 
 router.get('/', state);
-router.get('/add', addHost);
-router.get('/remove', removeHost);
+router.get('/add', enforceAdmin, addHost);
+router.get('/remove', enforceAdmin, removeHost);
 router.get('/bandwidth', enforceAdmin, setBandwidth);
 router.get('/usage', queryUsage);
