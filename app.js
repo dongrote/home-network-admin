@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(jwtInit(env.jwtKey()));
-// app.use('/', express.static('./public'));
+app.use('/', express.static('./public'));
 app.use('/api', indexRouter);
 app.use((req, res, next) => next(_.set(new Error('File Not Found'), 'statusCode', 404)));
 app.use((err, req, res, next) => {
