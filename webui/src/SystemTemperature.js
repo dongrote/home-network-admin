@@ -4,7 +4,7 @@ import TemperatureStatistic from './TemperatureStatistic';
 import {Sparklines, SparklinesLine} from 'react-sparklines';
 
 class SystemTemperature extends Component {
-  state = {showFahrenheit: true};
+  state = {showFahrenheit: false};
 
   toggleUnit() {
     this.setState({showFahrenheit: !this.state.showFahrenheit, history: []});
