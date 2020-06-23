@@ -2,25 +2,41 @@ import React, { Component } from 'react';
 import { Dropdown, Button, Grid, Icon } from 'semantic-ui-react';
 
 const bandwidthOptions = [{
-  key: '28kbit',
-  value: '28kbit',
-  text: '28.8 kbps',
+  key: '14.4kbit',
+  value: '14.4kbit',
+  text: '14 Kbps (Dial Up)',
+}, {
+  key: '28.8kbit',
+  value: '28.8kbit',
+  text: '28 Kbps (Dial Up)',
+}, {
+  key: '33.6kbit',
+  value: '33.6kbit',
+  text: '33 Kbps (Dial Up)',
+}, {
+  key: '57.6kbit',
+  value: '57.6kbit',
+  text: '56 Kbps (Dial Up)',
 }, {
   key: '64kbit',
   value: '64kbit',
-  text: '64 kbps',
+  text: '64 Kbps (ISDN)',
+}, {
+  key: '115.2kbit',
+  value: '115.2kbit',
+  text: '115 Kbps (ISDN)',
 }, {
   key: '128kbit',
   value: '128kbit',
-  text: '128 kbps',
+  text: '128 Kbps (ISDN)',
 }, {
   key: '256kbit',
   value: '256kbit',
-  text: '256 kbps',
+  text: '256 Kbps',
 }, {
   key: '512kbit',
   value: '512kbit',
-  text: '512 kbps',
+  text: '512 Kbps',
 }, {
   key: '1mbit',
   value: '1mbit',
