@@ -17,6 +17,7 @@ const disableAdBlockWorks = false;
 
 class App extends Component {
   state = {
+    lightDarkModeButtonText: null,
     admin: false,
     devices: [],
     services: [],
@@ -33,6 +34,7 @@ class App extends Component {
     throttleBandwidth: '28kbps',
     throttledHosts: [],
   };
+  lightMode = false;
 
   async fetchDevices() {
     var res = await fetch('/api/devices/state');
@@ -108,7 +110,25 @@ class App extends Component {
     ];
   }
 
+  setActiveStylesheet(theme) {
+    const css = `link[rel="alternate stylesheet"]`;
+    const stylesheets = document.querySelectorAll(css);
+    stylesheets.forEach(sheet => {
+      sheet.disabled = true;
+    });
+    const selector = `link[title="${theme}"]`;
+    const stylesheet = document.querySelector(selector);
+    stylesheet.disabled = false;
+  }
+
+  toggleLightMode() {
+    this.lightMode = !this.lightMode;
+    this.setActiveStylesheet(this.lightMode ? 'light' : 'dark');
+    this.setState({lightDarkModeButtonText: `Toggle ${this.lightMode ? 'Dark' : 'Light'} Mode`});
+  }
+
   componentDidMount() {
+    this.toggleLightMode();
     socket
       .on('ping', () => this.updateRole())
       .on('temp', msg => this.setState({
@@ -158,6 +178,20 @@ class App extends Component {
       )
       : (
         <Container text>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column>
+                <Button onClick={() => this.toggleLightMode()} content={this.state.lightDarkModeButtonText} />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={1}>
+              <Grid.Column textAlign='center'>
+                {this.state.role === 'admin'
+                  ? <Button fluid positive content='Authenticated' icon='lock' labelPosition='left' />
+                  : <Button fluid negative content='Authenticate' icon='unlock' labelPosition='left' onClick={() => this.setState({verifying: true})} />}
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
           <Segment.Group>
             <Segment textAlign='center'>
               {this.state.role === 'admin'
