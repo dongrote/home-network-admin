@@ -1,5 +1,6 @@
 'use strict';
-const core = require('../../core');
+const _ = require('lodash'),
+  core = require('../../core');
 
 exports = module.exports = (req, res, next) => {
   const role = _.get(req.query, 'role', 'admin');
