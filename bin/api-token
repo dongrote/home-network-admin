@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+require('dotenv').config();
+const jsonwebtoken = require('jsonwebtoken'),
+  env = require('../env'),
+  core = require('../core');
+
+core.auth.privateKey()
+  .then(privateKey => new Promise((resolve, reject) => {
+    jsonwebtoken.sign({role: 'admin'}, privateKey, {
+      algorithm: env.jwtAlgorithm(),
+      issuer: env.jwtIssuer(),
+    }, (err, signed) => err ? reject(err) : resolve(signed));
+  }))
+  .then(console.log)
+  .catch(console.error);
+
