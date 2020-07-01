@@ -9,6 +9,7 @@ import ThrottledDevices from './ThrottledDevices';
 import AdBlockButton from './AdBlockButton';
 import SystemInformation from './SystemInformation';
 import QRCode from './QRCode';
+import GenerateApiToken from './GenerateApiToken';
 import jwt from 'jsonwebtoken';
 
 const socket = io();
@@ -194,7 +195,6 @@ class App extends Component {
                 services={this.state.services}
                 onUnauthorized={() => this.onUnauthorized()}
               />}
-            {this.state.role === 'admin' && <QRCode src='/api/auth/qrcode' />}
             <SystemInformation
               fahrenheit={this.state.systemTempFahrenheit}
               celsius={this.state.systemTempCelsius}
@@ -202,6 +202,8 @@ class App extends Component {
               tempHistory={this.state.systemTempHistory}
               loadHistory={this.state.systemLoadHistory}
             />
+            {this.state.role === 'admin' && <QRCode src='/api/auth/qrcode' />}
+            {this.state.role === 'admin' && <GenerateApiToken />}
           </Segment.Group>
         </Container>
         );
