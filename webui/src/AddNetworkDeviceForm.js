@@ -72,7 +72,7 @@ class AddNetworkDeviceForm extends Component {
           </Grid.Row>
         </Grid>
       )
-      : (<Button onClick={() => this.setState({creating: true})}>Add new device</Button>);
+      : (<Button fluid onClick={() => this.setState({creating: true})}>Add new device</Button>);
   }
 }
 
