@@ -5,6 +5,7 @@ import BandwidthSelector from './BandwidthSelector';
 import AsyncButton from './AsyncButton';
 import AddThrottledHostForm from './AddThrottledHostForm';
 import BandwidthUsage from './BandwidthUsage';
+import OnlineLabel from './OnlineLabel';
 
 class ThrottledDevices extends Component {
 
@@ -15,27 +16,54 @@ class ThrottledDevices extends Component {
     }
   }
 
+  async updateOnlineStatus(hostname) {
+    var res = await fetch(`/api/devices/online?hostname=${encodeURIComponent(hostname)}`);
+    var json = await res.json();
+  }
+
   render() {
     return (
       <LabeledButtonGroup color='teal' label='Throttle Control'>
         <BandwidthSelector bandwidth={this.props.bandwidth} onUnauthorized={this.props.onUnauthorized}/>
-        <Grid>
-          {this.props.hosts.map((h, i) => (
-            <Grid.Row key={i} columns={2}>
+        {this.props.hosts.map((h, i) => (
+          <Grid columns={2} key={i}>
+            <Grid.Row>
               <Grid.Column>
-                <Button as='div' labelPosition='left'>
-                  <Label basic as='a'>{h}</Label>
-                  <AsyncButton icon onClick={() => this.onRemoveHost(h)}>
-                    <Icon name='trash alternate' />
-                  </AsyncButton>
-                </Button>
+                <Grid columns={1}>
+                  <Grid.Row>
+                    <Grid.Column>
+                      <OnlineLabel
+                        onClick={() => this.updateOnlineStatus(h)}
+                        canonicalName={h}
+                        onlineStatus='online'
+                      />
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
               </Grid.Column>
               <Grid.Column>
-                <BandwidthUsage hostname={h} />
+                <Grid columns={2}>
+                  <Grid.Row>
+                    <Grid.Column>
+                      <BandwidthUsage hostname={h} />
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Button
+                        negative
+                        icon
+                        onClick={() => this.onRemoveHost(h)}
+                      >
+                        <Icon name='trash alternate'/>
+                      </Button>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
               </Grid.Column>
             </Grid.Row>
-          ))}
-          <Grid.Row columns={1}>
+          </Grid>
+        ))}
+        <Grid columns={1}>
+          <Grid.Row>
             <Grid.Column>
               <AddThrottledHostForm onUnauthorized={this.props.onUnauthorized} />
             </Grid.Column>
