@@ -11,6 +11,7 @@ const iptables = require('./iptables'),
   deviceState = require('./devices/state'),
   onlineState = require('./devices/online'),
   createDevice = require('./devices/create'),
+  deleteDevice = require('./devices/delete'),
   createService = require('./services/create'),
   deviceEthernet = require('./devices/ethernet'),
   validateService = require('./services/validate'),
@@ -27,6 +28,7 @@ router.get('/services/state', serviceState);
 router.use('/services', enforceAdmin, services);
 router.post('/services', enforceAdmin, createService);
 router.post('/devices', enforceAdmin, createDevice);
+router.delete('/devices', enforceAdmin, deleteDevice);
 router.get('/devices/state', deviceState);
 router.get('/devices/online', onlineState);
 router.get('/devices/ethernet', deviceEthernet);
