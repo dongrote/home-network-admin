@@ -61,7 +61,7 @@ class BlockableDeviceRow extends Component {
                     error={this.state.error}
                     onClick={() => this.removeDevice(this.props.device)}
                   >
-                    <Icon name='trash' />
+                    <Icon name='trash alternate' />
                   </Button>
                 </Grid.Column>
               </Grid.Row>
