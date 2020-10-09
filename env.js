@@ -10,6 +10,7 @@ exports = module.exports = {
   configDirectory,
   tokenExpirationValue,
   tokenExpirationUnit,
+  storageMountPoints: () => _.get(process.env, 'MOUNT_POINTS', '/').split(':'),
   mfaKey: () => _.get(process.env, 'MFA_KEY', 'secret'),
   jwtKey: () => _.get(process.env, 'JWT_KEY', 'secret'),
   jwtIssuer: () => _.get(process.env, 'JWT_ISSUER', 'home-network-admin'),

@@ -2,6 +2,7 @@ import React from 'react';
 import {Grid} from 'semantic-ui-react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import SystemTemperature from './SystemTemperature';
+import SystemStorage from './SystemStorage';
 import LoadAverage from './LoadAverage';
 
 export default props => (
@@ -16,6 +17,12 @@ export default props => (
         load={props.load}
         history={props.loadHistory}
       />
+      {props.storage.map(s => <SystemStorage
+        mount={s.mount}
+        size={s.size}
+        used={s.used}
+        available={s.available}
+      />)}
     </Grid>
   </LabeledButtonGroup>
 );

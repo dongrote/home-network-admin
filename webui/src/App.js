@@ -33,6 +33,7 @@ class App extends Component {
     systemLoadHistory: [],
     throttleBandwidth: '28kbps',
     throttledHosts: [],
+    systemStorage: [],
   };
 
   async fetchDevices() {
@@ -65,6 +66,7 @@ class App extends Component {
     const systemTempCelsius = json.state.temp.celsius;
     const systemTempFahrenheit = json.state.temp.fahrenheit;
     const systemLoad = json.state.loadavg[0];
+    const systemStorage = json.state.storage;
     res = await fetch('/api/system/history?name=load');
     json = await res.json();
     const systemLoadHistory = json;
@@ -77,6 +79,7 @@ class App extends Component {
       systemTempHistory,
       systemLoad,
       systemLoadHistory,
+      systemStorage,
     });
   }
 
@@ -201,6 +204,7 @@ class App extends Component {
               load={this.state.systemLoad}
               tempHistory={this.state.systemTempHistory}
               loadHistory={this.state.systemLoadHistory}
+              storage={this.state.systemStorage}
             />
             {this.state.role === 'admin' && <QRCode src='/api/auth/qrcode' />}
             {this.state.role === 'admin' && <GenerateApiToken />}
