@@ -21,15 +21,8 @@ class SystemTemperature extends Component {
             title: 'Temperature (C)',
             legend: {position: 'none'},
             hAxis: {textPosition: 'none'},
-            vAxis: {viewWindow: {max: 100, min: 20}},
+            vAxis: {viewWindow: {max: 85, min: 20}},
             colors: ['orange'],
-            trendlines: {
-              0: {
-                type: 'polynomial',
-                degree: 3,
-                visibleInLegend: false,
-              },
-            },
           }}
         />
         </Grid.Column>

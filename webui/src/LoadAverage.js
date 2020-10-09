@@ -15,13 +15,6 @@ export default props => (
           hAxis: {textPosition: 'none'},
           vAxis: {viewWindow: {max: 15, min: 0}},
           colors: ['purple'],
-          trendlines: {
-            0: {
-              type: 'polynomial',
-              degree: 3,
-              visibleInLegend: false
-            }
-          }
         }}
       />
     </Grid.Column>
