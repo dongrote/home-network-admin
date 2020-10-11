@@ -9,6 +9,7 @@ export default props => (
   <LabeledButtonGroup label='System Information' color='green'>
     <Grid columns='equal'>
       <SystemTemperature
+        criticalCelsius={props.criticalCelsius}
         fahrenheit={props.fahrenheit}
         celsius={props.celsius}
         history={props.tempHistory}

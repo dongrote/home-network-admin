@@ -26,6 +26,7 @@ class App extends Component {
     role: 'guest',
     adblockEnabled: true,
     adblockDisabledUntil: null,
+    systemTempCriticalCelsius: 100,
     systemTempCelsius: null,
     systemTempFahrenheit: null,
     systemTempHistory: [],
@@ -63,6 +64,7 @@ class App extends Component {
   async fetchSystem() {
     var res = await fetch('/api/system/state');
     var json = await res.json();
+    const systemTempCriticalCelsius = json.state.temp.critical;
     const systemTempCelsius = json.state.temp.celsius;
     const systemTempFahrenheit = json.state.temp.fahrenheit;
     const systemLoad = json.state.loadavg[0];
@@ -74,6 +76,7 @@ class App extends Component {
     json = await res.json();
     const systemTempHistory = json;
     this.setState({
+      systemTempCriticalCelsius,
       systemTempCelsius,
       systemTempFahrenheit,
       systemTempHistory,
@@ -200,6 +203,7 @@ class App extends Component {
               />}
             <SystemInformation
               fahrenheit={this.state.systemTempFahrenheit}
+              criticalCelsius={this.state.systemTempCriticalCelsius}
               celsius={this.state.systemTempCelsius}
               load={this.state.systemLoad}
               tempHistory={this.state.systemTempHistory}

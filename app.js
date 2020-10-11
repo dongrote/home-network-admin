@@ -25,8 +25,8 @@ app.use((err, req, res, next) => {
   res.status(_.get(err, 'statusCode', 500)).json({err});
 });
 
-core.history.create('load', env.maxLoadHistory());
-core.history.create('temp', env.maxTempHistory());
+core.history.create('load', env.maxLoadHistory(), env.loadPollPeriod());
+core.history.create('temp', env.maxTempHistory(), env.tempPollPeriod());
 setInterval(() => core.system.loadavg()
   .then(([load]) => {
     core.history.add('load', load);

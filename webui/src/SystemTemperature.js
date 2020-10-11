@@ -32,7 +32,7 @@ class SystemTemperature extends Component {
             legend: {position: 'none'},
             hAxis: {textPosition: 'none'},
             vAxis: {viewWindow: {
-              max: this.adjustTemperatureValue(85),
+              max: this.adjustTemperatureValue(this.props.criticalCelsius),
               min: this.adjustTemperatureValue(20),
             }},
             colors: ['orange'],
