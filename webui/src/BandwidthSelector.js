@@ -42,6 +42,10 @@ const bandwidthOptions = [{
   value: '1mbit',
   text: '1 Mbps',
 }, {
+  key: '1.5mbit',
+  value: '1.5mbit',
+  text: '1.5 Mbps',
+}, {
   key: '2mbit',
   value: '2mbit',
   text: '2 Mbps',
