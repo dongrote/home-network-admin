@@ -14,6 +14,6 @@ exports = module.exports = (hostname, sampleTime) => {
   .then(({bps}) => ({
     Mbps: bps > 1000000 ? precisionRound(bps / 1000000) : null,
     Kbps: bps > 1000 ? precisionRound(bps / 1000) : null,
-    bps: precisionRound(bps),
+    bps: Math.round(bps),
   }));
 };
