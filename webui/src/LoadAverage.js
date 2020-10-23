@@ -10,10 +10,10 @@ export default props => (
         loader={<div>Loading Data</div>}
         data={[['Time', 'Load Average']].concat(props.history.map((l, i) => [i, l]))}
         options={{
-          title: `Current Load Average ${props.load}`,
+          title: `Current Load Average ${props.load} (Min: ${props.globalMinimum}; Max: ${props.globalMaximum})`,
           legend: {position: 'none'},
           hAxis: {textPosition: 'none'},
-          vAxis: {viewWindow: {max: 15, min: 0}},
+          vAxis: {viewWindow: {max: props.globalMaximum, min: 0}},
           colors: ['purple'],
         }}
       />

@@ -12,11 +12,15 @@ export default props => (
         criticalCelsius={props.criticalCelsius}
         fahrenheit={props.fahrenheit}
         celsius={props.celsius}
-        history={props.tempHistory}
+        history={props.tempHistory.entries}
+        globalMinimum={props.tempHistory.min}
+        globalMaximum={props.tempHistory.max}
       />
       <LoadAverage
         load={props.load}
-        history={props.loadHistory}
+        history={props.loadHistory.entries}
+        globalMinimum={props.loadHistory.min}
+        globalMaximum={props.loadHistory.max}
       />
       {props.storage.map(s => <SystemStorage
         mount={s.mount}
