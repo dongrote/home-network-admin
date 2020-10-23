@@ -12,8 +12,20 @@ class SystemTemperature extends Component {
     this.setState({showFahrenheit: !this.state.showFahrenheit, history: []});
   }
 
+  unitString() {
+    return `º${this.state.showFahrenheit ? 'F' : 'C'}`;
+  }
+
   currentTemperature() {
     return this.state.showFahrenheit ? `${this.props.fahrenheit}ºF` : `${this.props.celsius}ºC`;
+  }
+
+  globalMinimumTemperature() {
+    return `${this.adjustTemperatureValue(this.props.globalMinimum)}${this.unitString()}`;
+  }
+
+  globalMaximumTemperature() {
+    return `${this.adjustTemperatureValue(this.props.globalMaximum)}${this.unitString()}`;
   }
 
   adjustTemperatureValue(v) {
@@ -29,7 +41,7 @@ class SystemTemperature extends Component {
           loader={<div>Loading Data</div>}
           data={[['Time', 'Temperature']].concat(this.props.history.map((t, i) => [i, this.adjustTemperatureValue(t)]))}
           options={{
-            title: `Current Temperature ${this.currentTemperature()} (Maximum: ${this.props.globalMaximum})`,
+            title: `Current Temperature ${this.currentTemperature()} (Min: ${this.globalMinimumTemperature()}; Max: ${this.globalMaximumTemperature()})`,
             legend: {position: 'none'},
             hAxis: {textPosition: 'none'},
             vAxis: {viewWindow: {
