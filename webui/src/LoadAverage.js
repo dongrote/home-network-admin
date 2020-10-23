@@ -8,13 +8,16 @@ export default props => (
       <Chart
         chartType='AreaChart'
         loader={<div>Loading Data</div>}
-        data={[['Time', 'Load Average']].concat(props.history.map((l, i) => [i, l]))}
+        data={[['Time', 'Load Average', 'Minimum']].concat(props.history.map((l, i) => [i, l, props.globalMinimum]))}
         options={{
           title: `Current Load Average ${props.load} (Min: ${props.globalMinimum}; Max: ${props.globalMaximum})`,
           legend: {position: 'none'},
           hAxis: {textPosition: 'none'},
           vAxis: {viewWindow: {max: props.globalMaximum, min: 0}},
-          colors: ['purple'],
+          series: [
+            {color: 'purple'},
+            {color: 'purple', areaOpacity:  0.0, lineWidth: 1, lineDashStyle: [4, 2]}
+          ],
         }}
       />
     </Grid.Column>

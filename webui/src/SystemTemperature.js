@@ -39,7 +39,12 @@ class SystemTemperature extends Component {
         <Chart
           chartType='AreaChart'
           loader={<div>Loading Data</div>}
-          data={[['Time', 'Temperature']].concat(this.props.history.map((t, i) => [i, this.adjustTemperatureValue(t)]))}
+          data={[['Time', 'Minimum', 'Temperature', 'Maximum']].concat(this.props.history.map((t, i) => [
+            i,
+            this.adjustTemperatureValue(this.props.globalMinimum),
+            this.adjustTemperatureValue(t),
+            this.adjustTemperatureValue(this.props.globalMaximum)
+          ]))}
           options={{
             title: `Current Temperature ${this.currentTemperature()} (Min: ${this.globalMinimumTemperature()}; Max: ${this.globalMaximumTemperature()})`,
             legend: {position: 'none'},
@@ -48,7 +53,11 @@ class SystemTemperature extends Component {
               max: this.adjustTemperatureValue(this.props.criticalCelsius),
               min: this.adjustTemperatureValue(this.props.globalMinimum - minimumTemperaturePad),
             }},
-            colors: ['orange'],
+            series: [
+              {color: 'blue', areaOpacity: 0.0, lineWidth: 1, lineDashStyle: [4, 2]},
+              {color: 'orange'},
+              {color: 'red', areaOpacity: 0.0, lineWidth: 1, lineDashStyle: [4, 2]}
+            ]
           }}
         />
         </Grid.Column>
