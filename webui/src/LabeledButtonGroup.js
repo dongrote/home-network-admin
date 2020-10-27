@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Segment, Header, Grid, Button } from 'semantic-ui-react';
 
 class LabeledButtonGroup extends Component {
-  state = {show: false};
+  state = {show: true};
 
   onShowToggle() {
     this.setState({show: !this.state.show});
@@ -13,18 +13,18 @@ class LabeledButtonGroup extends Component {
     return (
       <Segment color={this.props.color} loading={this.props.loading}>
         <Segment vertical>
-          <Grid columns={2}>
+          <Grid columns={1}>
             <Grid.Row>
               <Grid.Column>
                 <Header as='h2' textAlign='left'>{this.props.label}</Header>
               </Grid.Column>
-              <Grid.Column textAlign='right'>
+              {false && <Grid.Column textAlign='right'>
                 <Button
                   basic
                   content={this.state.show ? 'Hide' : 'Show'}
                   onClick={() => this.onShowToggle()}
                 />
-              </Grid.Column>
+              </Grid.Column>}
             </Grid.Row>
           </Grid>
         </Segment>

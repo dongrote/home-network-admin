@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Grid, Label, Icon } from 'semantic-ui-react';
+import { Button, Grid, Icon } from 'semantic-ui-react';
 import LabeledButtonGroup from './LabeledButtonGroup';
 import BandwidthSelector from './BandwidthSelector';
-import AsyncButton from './AsyncButton';
 import AddThrottledHostForm from './AddThrottledHostForm';
 import BandwidthUsage from './BandwidthUsage';
 import OnlineLabel from './OnlineLabel';
@@ -17,8 +16,7 @@ class ThrottledDevices extends Component {
   }
 
   async updateOnlineStatus(hostname) {
-    var res = await fetch(`/api/devices/online?hostname=${encodeURIComponent(hostname)}`);
-    var json = await res.json();
+    await fetch(`/api/devices/online?hostname=${encodeURIComponent(hostname)}`);
   }
 
   render() {

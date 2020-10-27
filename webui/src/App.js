@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
-import {Container, Grid, Segment, Button} from 'semantic-ui-react';
+import {Container, Grid, Segment, Button, Sidebar} from 'semantic-ui-react';
 import BlockableDevices from './BlockableDevices';
 import WakeOnLanDevices from './WakeOnLanDevices';
 import MFATokenInput from './MFATokenInput';
@@ -10,14 +10,18 @@ import AdBlockButton from './AdBlockButton';
 import SystemInformation from './SystemInformation';
 import QRCode from './QRCode';
 import GenerateApiToken from './GenerateApiToken';
+import MenuSidebar from './MenuSidebar';
 import jwt from 'jsonwebtoken';
 
 const socket = io();
 const displayServices = false;
 const disableAdBlockWorks = false;
+const enableBigAuthButton = false;
 
 class App extends Component {
   state = {
+    menuVisible: false,
+    view: 'devices',
     admin: false,
     devices: [],
     services: [],
@@ -156,7 +160,7 @@ class App extends Component {
           <Grid centered verticalAlign='middle'>
             <Grid.Row>
               <MFATokenInput
-                onCancel={() => this.setState({verifying: false})}
+                onCancel={() => this.setState({verifying: false, menuVisible: false})}
                 onSubmit={() => window.location.reload()}
               />
             </Grid.Row>
@@ -165,12 +169,36 @@ class App extends Component {
       )
       : (
         <Container text>
-          <Segment.Group>
-            <Segment textAlign='center'>
+          <Sidebar.Pushable>
+            <MenuSidebar
+              visible={this.state.menuVisible}
+              authenticated={this.state.role === 'admin'}
+              onClick={view => {
+                if (view === 'auth') {
+                  return this.state.role === 'admin'
+                    ? this.setState({menuVisible: false})
+                    : this.setState({verifying: true});
+                }
+                this.setState({view, menuVisible: false});
+              }}
+            />
+            <Sidebar.Pusher>
+            <Segment.Group>
+              <Segment textAlign='center'>
+                <Button
+                  primary
+                  fluid
+                  icon={`${this.state.menuVisible ? 'in' : 'out'}dent`}
+                  labelPosition='right'
+                  content='Menu'
+                  onClick={() => this.setState({menuVisible: !this.state.menuVisible})}
+                />
+              </Segment>
+            {enableBigAuthButton && <Segment textAlign='center'>
               {this.state.role === 'admin'
                 ? <Button fluid positive content='Authenticated' icon='lock' labelPosition='left' />
                 : <Button fluid negative content='Authenticate' icon='unlock' labelPosition='left' onClick={() => this.setState({verifying: true})} />}
-            </Segment>
+            </Segment>}
             {disableAdBlockWorks &&
               <Segment textAlign='center'>
                 <AdBlockButton
@@ -180,28 +208,22 @@ class App extends Component {
                 />
             </Segment>
             }
-            <BlockableDevices
+            {this.state.view === 'devices' && <BlockableDevices
               role={this.state.role}
               devices={this.state.devices}
               onUnauthorized={() => this.onUnauthorized()}
-            />
-            <WakeOnLanDevices
+            />}
+            {this.state.view === 'power' && <WakeOnLanDevices
               role={this.state.role}
               devices={this.state.wol}
               onUnauthorized={() => this.onUnauthorized()}
-            />
-            <ThrottledDevices
+            />}
+            {this.state.view === 'throttle' && <ThrottledDevices
               bandwidth={this.state.throttleBandwidth}
               hosts={this.state.throttledHosts}
               onUnauthorized={() => this.onUnauthorized()}
-            />
-            {displayServices &&
-              <BlockableServices
-                role={this.state.role}
-                services={this.state.services}
-                onUnauthorized={() => this.onUnauthorized()}
-              />}
-            <SystemInformation
+            />}
+            {this.state.view === 'system' && <SystemInformation
               fahrenheit={this.state.systemTempFahrenheit}
               criticalCelsius={this.state.systemTempCriticalCelsius}
               celsius={this.state.systemTempCelsius}
@@ -209,10 +231,18 @@ class App extends Component {
               tempHistory={this.state.systemTempHistory}
               loadHistory={this.state.systemLoadHistory}
               storage={this.state.systemStorage}
-            />
-            {this.state.role === 'admin' && <QRCode src='/api/auth/qrcode' />}
-            {this.state.role === 'admin' && <GenerateApiToken />}
+            />}
+            {this.state.view === 'qrcode' && this.state.role === 'admin' && <QRCode src='/api/auth/qrcode'/>}
+            {this.state.view === 'token' && this.state.role === 'admin' && <GenerateApiToken/>}
+            {displayServices &&
+              <BlockableServices
+                role={this.state.role}
+                services={this.state.services}
+                onUnauthorized={() => this.onUnauthorized()}
+              />}
           </Segment.Group>
+            </Sidebar.Pusher>
+          </Sidebar.Pushable>
         </Container>
         );
   }
