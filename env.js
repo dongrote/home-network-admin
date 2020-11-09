@@ -34,4 +34,6 @@ exports = module.exports = {
   loadPollPeriod: () => Number(_.get(process.env, 'LOAD_POLL_PERIOD', '2000')),
   maxTempHistory: () => Number(_.get(process.env, 'MAX_TEMP_HISTORY', '1000')),
   tempPollPeriod: () => Number(_.get(process.env, 'TEMP_POLL_PERIOD', '2000')),
+  publishAddress: () => _.get(process.env, 'PUBLISH_ADDRESS', '224.0.0.100'),
+  publishPort: () => Number(_.get(process.env, 'PUBLISH_PORT', 1024)),
 };

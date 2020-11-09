@@ -25,6 +25,16 @@ app.use((err, req, res, next) => {
   res.status(_.get(err, 'statusCode', 500)).json({err});
 });
 
+core.SystemMetricsListener.create(env.publishAddress(), env.publishPort())
+  .then(systemMetricsListener => systemMetricsListener
+    .on('rx', msg => {
+      log.info('received system-metrics message from', msg.hostname);
+      core.Websockets.emit('system-metrics', msg);
+    })
+    .on('error', err => log.error('systemMetricsListener', err)))
+  .catch(err => log.error('SystemMetricsListener.create', err));
+
+
 core.history.create('load', env.maxLoadHistory(), env.loadPollPeriod());
 core.history.create('temp', env.maxTempHistory(), env.tempPollPeriod());
 setInterval(() => core.system.loadavg()
