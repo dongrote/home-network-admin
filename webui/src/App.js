@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import io from 'socket.io-client';
+import socket from './websocket';
 import {Container, Grid, Segment, Button, Sidebar} from 'semantic-ui-react';
 import BlockableDevices from './BlockableDevices';
 import WakeOnLanDevices from './WakeOnLanDevices';
@@ -12,8 +12,8 @@ import QRCode from './QRCode';
 import GenerateApiToken from './GenerateApiToken';
 import MenuSidebar from './MenuSidebar';
 import jwt from 'jsonwebtoken';
+import SystemMetricsCollection from './SystemMetricsCollection';
 
-const socket = io();
 const displayServices = false;
 const disableAdBlockWorks = false;
 const enableBigAuthButton = false;
@@ -232,6 +232,7 @@ class App extends Component {
               loadHistory={this.state.systemLoadHistory}
               storage={this.state.systemStorage}
             />}
+            {this.state.view === 'new-system' && <SystemMetricsCollection />}
             {this.state.view === 'qrcode' && this.state.role === 'admin' && <QRCode src='/api/auth/qrcode'/>}
             {this.state.view === 'token' && this.state.role === 'admin' && <GenerateApiToken/>}
             {displayServices &&

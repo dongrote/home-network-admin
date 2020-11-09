@@ -30,6 +30,10 @@ export default props => (
       <Icon name='thermometer half'/>
       System
     </Menu.Item>
+    <Menu.Item as='a' onClick={() => props.onClick('new-system')}>
+      <Icon name='thermometer full'/>
+      New System
+    </Menu.Item>
     {props.authenticated && <Menu.Item as='a' onClick={() => props.onClick('qrcode')}>
       <Icon name='qrcode'/>
       QR Code
