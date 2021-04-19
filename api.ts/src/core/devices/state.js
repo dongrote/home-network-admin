@@ -9,8 +9,8 @@ exports = module.exports = () => available()
       if (i < _.size(devices)) {
         const device = devices[i];
         blocked(device.name)
-          .then(blocked => {
-            device.blocked = blocked;
+          .then(blockedState => {
+            device.blocked = blockedState;
             device.online = true;
             next(i + 1);
           })

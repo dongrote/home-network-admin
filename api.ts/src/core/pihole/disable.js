@@ -1,7 +1,7 @@
 'use strict';
 const _ = require('lodash'),
   moment = require('moment'),
-  Websockets = require('../Websockets'),
+  {default: Websockets} = require('../Websockets'),
   url = require('url'),
   env = require('../../env'),
   isEnabled = require('./enabled'),

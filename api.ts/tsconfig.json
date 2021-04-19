@@ -1,0 +1,16 @@
+  
+{
+  "compilerOptions": {
+    "lib": ["ES2018", "ESNext", "DOM"],
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": false,
+    "allowJs": true,
+    "target": "ES2018",
+    "esModuleInterop": true,
+    "sourceMap": false
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "**/__mocks__/*", "**/*.test.ts"]
+}

@@ -4,19 +4,16 @@ const rp = require('request-promise-native'),
   sessionCookie = require('./sessionCookie');
 
 exports = module.exports = (uri, webpassword) => sessionCookie(uri)
-  .then(sessionCookie => {
+  .then(session => {
     const jar = rp.jar(),
       login = webpassword ? loginCookie(webpassword) : null;
-    jar.setCookie(sessionCookie, uri);
+    jar.setCookie(session, uri);
     if (login) {
       jar.setCookie(login, uri);
     }
     return {
       uri,
       cookieJar: jar,
-      cookies: {
-        login,
-        session: sessionCookie,
-      },
+      cookies: {login, session},
     };
   });

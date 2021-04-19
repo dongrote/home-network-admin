@@ -10,8 +10,8 @@ exports = module.exports = yamlpath => new Promise((resolve, reject) => {
     }
     try {
       parsedYaml = yaml.parse(data.toString());
-    } catch (err) {
-      return reject(err);
+    } catch (yamlError) {
+      return reject(yamlError);
     }
     resolve(parsedYaml);
   });

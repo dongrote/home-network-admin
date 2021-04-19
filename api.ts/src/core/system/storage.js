@@ -8,6 +8,7 @@ exports = module.exports = mountPoints => new Promise((resolve, reject) => {
     stats = [];
   let stdoutBuffer = Buffer.from('');
   const child = cp.spawn('df', {stdio: ['ignore', 'pipe', 'ignore']});
+  child.on('error', reject);
   child.stdout
     .on('data', chunk => {
       stdoutBuffer = Buffer.concat([stdoutBuffer, chunk]);

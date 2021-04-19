@@ -9,6 +9,7 @@ const _ = require('lodash'),
   log = require('debug-logger')('app'),
   jwtInit = require('./middleware/jwtInit'),
   core = require('./core'),
+  {default: Websockets} = require('./core/Websockets'),
   indexRouter = require('./routes/index');
 
 app.use(logger('dev'));
@@ -20,7 +21,7 @@ app.use(jwtInit(env.jwtKey()));
 app.use('/', express.static('./public'));
 app.use('/api', indexRouter);
 app.use((req, res, next) => next(_.set(new Error('File Not Found'), 'statusCode', 404)));
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) => { /* eslint-disable-line @typescript-eslint/no-unused-vars */
   log.error(err);
   res.status(_.get(err, 'statusCode', 500)).json({err});
 });
@@ -30,12 +31,12 @@ core.history.create('temp', env.maxTempHistory(), env.tempPollPeriod());
 setInterval(() => core.system.loadavg()
   .then(([load]) => {
     core.history.add('load', load);
-    core.Websockets.emit('load', {load, history: core.history.get('load')});
+    Websockets.emit('load', {load, history: core.history.get('load')});
   })
   .catch(log.error), env.loadPollPeriod());
 setInterval(() => core.system.temp()
   .then(temp => {
     core.history.add('temp', temp.celsius);
-    core.Websockets.emit('temp', {temp, history: core.history.get('temp')});
+    Websockets.emit('temp', {temp, history: core.history.get('temp')});
   })
   .catch(log.error), env.tempPollPeriod());
